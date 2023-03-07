@@ -14,11 +14,6 @@ ID = "answerer01"
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 
-def split_data(data, chunk_size):
-    """
-    데이터를 chunk_size 크기로 쪼개어 리스트 형태로 반환하는 함수
-    """
-    return [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
 
 async def main():
     
@@ -42,11 +37,11 @@ async def main():
             sock.sendto(buf, (SOCKET, PORT))
             
             
-            image = cv2.imdecode(buf, cv2.IMREAD_COLOR)
+            # image = cv2.imdecode(buf, cv2.IMREAD_COLOR)
 
-            cv2.imshow('image', image)
+            # cv2.imshow('image', image)
             
-            cv2.waitKey(1)
+            # cv2.waitKey(1)
             
             
         

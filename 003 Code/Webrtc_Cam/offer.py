@@ -6,10 +6,11 @@ import cv2
 import numpy as np
 import base64
 from config import *
-import time
+import os
 
 
 ID = "offerer01"
+# os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "dummy"
 
 
 async def main():
@@ -19,15 +20,19 @@ async def main():
 
     channel = peer_connection.createDataChannel("video")
     
+    
+    
+    
     async def send_video():
+        # cap = cv2.VideoCapture("rtsp://192.168.50.119:8554/live?resolution=1920x960")
         cap = cv2.VideoCapture(0)
         
         while True:
             
-            ret, frame = cap.read()
+            ret, frame = cap.read(0)
             
             #해상도 줄여서 데이터 크기 축소(화질떨어짐)
-            frame = cv2.resize(frame,(1024, 720))
+            frame = cv2.resize(frame,(360, 240))
             
             if not ret :
                 break
@@ -36,7 +41,7 @@ async def main():
             
             _, buffer = cv2.imencode('.jpg', frame,[int(cv2.IMWRITE_JPEG_QUALITY), 60])
             
-            print(len(buffer))
+            
             # print(len(buffer))
             img_str = base64.b64encode(buffer).decode('utf-8')
         
