@@ -51,7 +51,7 @@ def get_answer():
         return Response(j, status = 200, mimetype='application/json')
     else:
         return Response(status = 503)
-    
+
 
 if __name__ == '__main__':
     app.run(HOST, port=8000, debug=True)

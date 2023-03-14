@@ -61,7 +61,7 @@ async def main():
     message = {"id": ID, "sdp" : peer_connection.localDescription.sdp, "type" : peer_connection.localDescription.type}
     r = requests.post(SIGNALING_SERVER_URL + '/offer', data = message)
     print(r.status_code)
-
+    
     #데이터 전송
     while True:
         resp = requests.get(SIGNALING_SERVER_URL + "/get_answer")
