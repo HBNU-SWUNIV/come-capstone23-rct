@@ -37,11 +37,11 @@ async def main():
             sock.sendto(buf, (SOCKET, PORT))
             
             
-            # image = cv2.imdecode(buf, cv2.IMREAD_COLOR)
+            image = cv2.imdecode(buf, cv2.IMREAD_COLOR)
 
-            # cv2.imshow('image', image)
+            cv2.imshow('image', image)
             
-            # cv2.waitKey(1)
+            cv2.waitKey(1)
             
             
         
