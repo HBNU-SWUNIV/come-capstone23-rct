@@ -16,9 +16,13 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 
 async def main():
+
+    config = RTCConfiguration(iceServers=[
+        RTCIceServer(urls=["stun:stun.l.google.com:19302"])
+    ])
     
     print("Starting")
-    peer_connection = RTCPeerConnection()
+    peer_connection = RTCPeerConnection(configuration=config)
     
 
     @peer_connection.on("datachannel")

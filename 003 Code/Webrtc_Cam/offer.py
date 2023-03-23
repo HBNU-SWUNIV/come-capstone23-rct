@@ -15,8 +15,12 @@ ID = "offerer01"
 
 async def main():
     
+    config = RTCConfiguration(iceServers=[
+        RTCIceServer(urls=["stun:stun.l.google.com:19302"])
+    ])
+
     print("Starting")
-    peer_connection = RTCPeerConnection()
+    peer_connection = RTCPeerConnection(configuration=config)
 
     channel = peer_connection.createDataChannel("video")
     
