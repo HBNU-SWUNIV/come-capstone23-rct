@@ -2,10 +2,16 @@ from flask import Flask, request, Response
 import json
 from config import * 
 
+
+# from requests import get
+# ip = get("https://api.ipify.org").text
+# print(ip)
+
 app = Flask(__name__)
 
 data = {}
- 
+
+
  # 서버 정상적으로 실행되었는지 확인
 @app.route('/')
 def ok():

@@ -29,7 +29,6 @@ async def main():
         @channel.on("message")
         async def on_message(message):
             
-            print(message)
             
             binary_data = base64.b64decode(message)
                     
