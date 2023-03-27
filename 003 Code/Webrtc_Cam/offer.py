@@ -47,7 +47,7 @@ async def main():
             img_str = base64.b64encode(buffer).decode('utf-8')
         
             ###
-            print(type(img_str))
+            
             channel.send(img_str)
                         
             await asyncio.sleep(0.1)
