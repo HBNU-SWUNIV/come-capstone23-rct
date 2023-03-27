@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 using System.Threading.Tasks;
 using System;
 
-public class webrtc_message : MonoBehaviour
+public class WebRTC3 : MonoBehaviour
 {
 
     [System.Serializable]
@@ -44,48 +44,101 @@ public class webrtc_message : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        WebRTC.Initialize();
         config = new RTCConfiguration();
         RTCIceServer[] iceServers = { new RTCIceServer { urls = STUNSERVER } };
         config.iceServers = iceServers;
 
         peerConnection = new RTCPeerConnection(ref config);
 
-        peerConnection.OnDataChannel += OnDataChannel;
-
         RTCDataChannelInit channelConfig = new RTCDataChannelInit();
-        channel = peerConnection.CreateDataChannel("chat", channelConfig);
+
+        channel = peerConnection.CreateDataChannel("video",channelConfig);
+        channel.OnOpen += () =>
+        {
+            Debug.Log("Data channel Open!");
+        };
+        channel.OnClose += () =>
+        {
+            Debug.Log("Data channel closed!");
+        };
+
+        channel.OnMessage += (data) =>
+        {
+            Debug.Log("Data channel received message: " + data);
+        };
+        
         StartCoroutine(GetResquest(SIGNALING_SERVER_URL));
 
     }
 
     private void Update() 
     {
-        peerConnection.OnIceConnectionChange = state => {
-        Debug.Log(state);
-        };
+       
+        peerConnection.OnDataChannel = (channel_1) =>
+        {
+            Debug.Log("Data channel created by remote party!");
 
+            // Assign the channel object to the dataChannel variable
+            channel = channel_1;
+
+            // Set up the data channel event handlers
+            channel.OnOpen += () =>
+            {
+                Debug.Log("Data channel open!");
+            };
+
+            channel.OnClose += () =>
+            {
+                Debug.Log("Data channel closed!");
+            };
+
+            channel.OnMessage += (byte[] bytes) =>
+            {
+                
+                var message = System.Text.Encoding.UTF8.GetString(bytes);
+                Debug.Log(message);
+            };
+        };
+       
+        // peerConnection.OnIceConnectionChange = state =>
+        // {
+        //     Debug.Log("ddd"+state);
+        //     if (state == RTCIceConnectionState.Connected)
+        //     {
+        //         peerConnection.OnDataChannel += OnDataChannel;
+        //     }
+        // };
+    
+
+    }
+
+    private void OnDataChannelOpened()
+    {
+        Debug.Log("Data channel Opend");
     }
 
     private void OnDataChannel(RTCDataChannel channel) 
     {
         Debug.Log(channel.Label + " - created by remote party");
-        channel.OnMessage += HandleReceiveMessage;
+        channel.OnMessage += (byte[] bytes) =>
+        {
+            var message = System.Text.Encoding.UTF8.GetString(bytes);
+            Debug.Log("channel message");
+            Debug.Log(message);
+        };
+        Debug.Log("onmessage-----------"+channel.ReadyState);
     }
 
     void HandleReceiveMessage(byte[] bytes)
     {
-        Debug.Log("handle in?");
+        // Debug.Log("handle in?");
         var message = System.Text.Encoding.UTF8.GetString(bytes);
         Debug.Log(message);
     }
 
-
-
-    private void OnDestroy() {
-        channel.Close();
-        peerConnection.Close();
-    }
-
+  
     IEnumerator Createanswer()
     {
         var op = peerConnection.CreateAnswer();
@@ -171,20 +224,15 @@ public class webrtc_message : MonoBehaviour
     async void peer_connection_remote_acces(RTCSessionDescription desc)
     {
         peerConnection.SetRemoteDescription(ref desc);
-        await Task.Delay(500); 
+        await Task.Delay(1000); 
 
     }
 
     async void  peer_local_connection_access(RTCSessionDescription desc)
     {
         peerConnection.SetLocalDescription(ref desc);
-        await Task.Delay(500); 
-        StartCoroutine(PostResquest(desc));
-    }
-
-    async void Time_stop()
-    {
         await Task.Delay(1000); 
+        StartCoroutine(PostResquest(desc));
     }
 
 }
