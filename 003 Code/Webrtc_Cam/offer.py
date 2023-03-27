@@ -41,7 +41,7 @@ async def main():
             
             # Encode the frame in base64
             
-            _, buffer = cv2.imencode('.jpg', frame,[int(cv2.IMWRITE_JPEG_QUALITY), 60])
+            _, buffer = cv2.imencode('.jpg', frame)
             
             
             img_str = base64.b64encode(buffer).decode('utf-8')
@@ -50,7 +50,7 @@ async def main():
             print(type(img_str))
             channel.send(img_str)
                         
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.045)
 
     @channel.on("open")
     def on_open():
