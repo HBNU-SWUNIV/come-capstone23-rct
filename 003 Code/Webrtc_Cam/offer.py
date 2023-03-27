@@ -32,14 +32,14 @@ async def main():
             ret, frame = cap.read(0)
             
             #해상도 줄여서 데이터 크기 축소(화질떨어짐)
-            frame = cv2.resize(frame,(360, 240))
+            # frame = cv2.resize(frame,(360, 240))
             
             if not ret :
                 break
             
             # Encode the frame in base64
             
-            _, buffer = cv2.imencode('.jpg', frame,[int(cv2.IMWRITE_JPEG_QUALITY), 60])
+            _, buffer = cv2.imencode('.jpg', frame)
             
             
             # print(len(buffer))
@@ -49,7 +49,7 @@ async def main():
             
             channel.send(img_str)
                         
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.045)
 
     @channel.on("open")
     def on_open():
