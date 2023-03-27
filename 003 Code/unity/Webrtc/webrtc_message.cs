@@ -96,48 +96,13 @@ public class WebRTC3 : MonoBehaviour
 
             channel.OnMessage += (byte[] bytes) =>
             {
-                
+                //data 수신
                 var message = System.Text.Encoding.UTF8.GetString(bytes);
                 Debug.Log(message);
             };
         };
-       
-        // peerConnection.OnIceConnectionChange = state =>
-        // {
-        //     Debug.Log("ddd"+state);
-        //     if (state == RTCIceConnectionState.Connected)
-        //     {
-        //         peerConnection.OnDataChannel += OnDataChannel;
-        //     }
-        // };
-    
 
     }
-
-    private void OnDataChannelOpened()
-    {
-        Debug.Log("Data channel Opend");
-    }
-
-    private void OnDataChannel(RTCDataChannel channel) 
-    {
-        Debug.Log(channel.Label + " - created by remote party");
-        channel.OnMessage += (byte[] bytes) =>
-        {
-            var message = System.Text.Encoding.UTF8.GetString(bytes);
-            Debug.Log("channel message");
-            Debug.Log(message);
-        };
-        Debug.Log("onmessage-----------"+channel.ReadyState);
-    }
-
-    void HandleReceiveMessage(byte[] bytes)
-    {
-        // Debug.Log("handle in?");
-        var message = System.Text.Encoding.UTF8.GetString(bytes);
-        Debug.Log(message);
-    }
-
   
     IEnumerator Createanswer()
     {
