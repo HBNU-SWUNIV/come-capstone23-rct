@@ -2,16 +2,10 @@ from flask import Flask, request, Response
 import json
 from config import * 
 
-
-# from requests import get
-# ip = get("https://api.ipify.org").text
-# print(ip)
-
 app = Flask(__name__)
 
 data = {}
-
-
+ 
  # 서버 정상적으로 실행되었는지 확인
 @app.route('/')
 def ok():
@@ -29,11 +23,26 @@ def offer():
     
 @app.route('/answer', methods=['POST'])
 def answer():
-    if request.form["type"]  == "answer":
-        data["answer"] = {"id" : request.form['id'], "type" : request.form['type'], "sdp":request.form['sdp']}
+    # print(request.form)
+    # print(f'\n {request.form.to_dict()} \n')
+    req = request.form.to_dict()
+    req_key = list(req.keys())
+    req_key = req_key[0]
+    #req_result = dict(req_key)
+    req_result = json.loads(req_key)
+
+
+    if req_result['type'] == 'Answer':
+        data["answer"] = {"id" : req_result['id'], "type" : req_result['type'], "sdp":req_result['sdp']}
+        # print(f'\n Test done {req_result}\n')
         return Response(status=200)
-    else:
-        return Response(status=400)
+    else : return Response(status=400)
+    
+    # if request.form["type"]  == "answer":
+    #     data["answer"] = {"id" : request.form['id'], "type" : request.form['type'], "sdp":request.form['sdp']}
+    #     return Response(status=200)
+    # else:
+    #     return Response(status=400)
     
 
 @app.route('/get_offer')
@@ -57,7 +66,7 @@ def get_answer():
         return Response(j, status = 200, mimetype='application/json')
     else:
         return Response(status = 503)
-
+    
 
 if __name__ == '__main__':
     app.run(HOST, port=8000, debug=True)

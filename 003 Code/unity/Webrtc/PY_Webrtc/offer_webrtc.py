@@ -8,61 +8,31 @@ import base64
 from config import *
 import os
 
-
 ID = "offerer01"
-# os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "dummy"
-
 
 async def main():
     
-    config = RTCConfiguration(iceServers=[
-        RTCIceServer(urls=["stun:stun.l.google.com:19302"])
-    ])
-
     print("Starting")
-    peer_connection = RTCPeerConnection(configuration=config)
+    peer_connection = RTCPeerConnection()
 
-    channel = peer_connection.createDataChannel("video")
+    channel = peer_connection.createDataChannel("chat")
     
-    
-    async def send_video():
-        # cap = cv2.VideoCapture("rtsp://192.168.50.119:8554/live?resolution=1920x960")
-        cap = cv2.VideoCapture(0)
-        
+    async def send_data():
         while True:
-            
-            ret, frame = cap.read(1)
-            
-            #해상도 줄여서 데이터 크기 축소(화질떨어짐)
-            # frame = cv2.resize(frame,(360, 240))
-            
-            if not ret :
-                break
-            
-            # Encode the frame in base64
-            
-            _, buffer = cv2.imencode('.jpg', frame)
-            
-            
-            img_str = base64.b64encode(buffer).decode('utf-8')
-        
-            ###
-            print(type(img_str))
-            channel.send(img_str)
-                        
-            await asyncio.sleep(0.045)
+            channel.send("rdddddddddddddddd")
+            print("send finish")
+            await asyncio.sleep(1)
 
     @channel.on("open")
     def on_open():
         print("channel opened")
-        asyncio.ensure_future(send_video())
+        asyncio.ensure_future(send_data())
         
 
     await peer_connection.setLocalDescription(await peer_connection.createOffer())
     message = {"id": ID, "sdp" : peer_connection.localDescription.sdp, "type" : peer_connection.localDescription.type}
     r = requests.post(SIGNALING_SERVER_URL + '/offer', data = message)
-    print(r.status_code)
-    
+
     #데이터 전송
     while True:
         resp = requests.get(SIGNALING_SERVER_URL + "/get_answer")
@@ -71,6 +41,7 @@ async def main():
             await asyncio.sleep(1)
         elif resp.status_code == 200:
             data = resp.json()
+            print(data)
             if data["type"] == "Answer":
                 data["type"] = "answer"
                 rd = RTCSessionDescription(sdp = data["sdp"], type=data["type"])
@@ -81,6 +52,5 @@ async def main():
             else:
                 print("Wrong type")
             break
-        print(resp.status_code)
     
 asyncio.run(main())
