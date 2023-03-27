@@ -44,14 +44,13 @@ async def main():
             _, buffer = cv2.imencode('.jpg', frame,[int(cv2.IMWRITE_JPEG_QUALITY), 60])
             
             
-            # print(len(buffer))
             img_str = base64.b64encode(buffer).decode('utf-8')
         
             ###
-            
+            print(type(img_str))
             channel.send(img_str)
                         
-            await asyncio.sleep(0.045)
+            await asyncio.sleep(0.1)
 
     @channel.on("open")
     def on_open():
@@ -72,7 +71,8 @@ async def main():
             await asyncio.sleep(1)
         elif resp.status_code == 200:
             data = resp.json()
-            if data["type"] == "answer":
+            if data["type"] == "Answer":
+                data["type"] = "answer"
                 rd = RTCSessionDescription(sdp = data["sdp"], type=data["type"])
                 await peer_connection.setRemoteDescription(rd)
                 print(peer_connection.remoteDescription)
