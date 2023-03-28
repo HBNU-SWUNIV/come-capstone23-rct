@@ -29,11 +29,18 @@ def offer():
     
 @app.route('/answer', methods=['POST'])
 def answer():
-    if request.form["type"]  == "answer":
-        data["answer"] = {"id" : request.form['id'], "type" : request.form['type'], "sdp":request.form['sdp']}
+    
+    req = request.form.to_dict()
+    req_key = list(req.keys())
+    req_key = req_key[0]
+    #req_result = dict(req_key)
+    req_result = json.loads(req_key)
+    
+    if req_result['type'] == 'Answer':
+        data["answer"] = {"id" : req_result['id'], "type" : req_result['type'], "sdp":req_result['sdp']}
+        # print(f'\n Test done {req_result}\n')
         return Response(status=200)
-    else:
-        return Response(status=400)
+    else : return Response(status=400)
     
 
 @app.route('/get_offer')

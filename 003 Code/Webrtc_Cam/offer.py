@@ -34,7 +34,7 @@ async def main():
             ret, frame = cap.read(1)
             
             #해상도 줄여서 데이터 크기 축소(화질떨어짐)
-            # frame = cv2.resize(frame,(360, 240))
+            frame = cv2.resize(frame,(640, 480))
             
             if not ret :
                 break
@@ -50,7 +50,7 @@ async def main():
             
             channel.send(img_str)
                         
-            await asyncio.sleep(0.045)
+            await asyncio.sleep(0.1)
 
     @channel.on("open")
     def on_open():
