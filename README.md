@@ -1,3 +1,6 @@
+git clone시 터미널에서 `git config --system core.longpaths true` 명령어 입력 후 git clone을 해야 함.
+
+
 # 한밭대학교 컴퓨터공학과 RCT팀
 
 **팀 구성**
