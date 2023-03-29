@@ -195,7 +195,6 @@ class MirobotManager():
     def send_msg(self, msg, var_command=False, disable_debug=False, terminator=os.linesep, wait_ok=None, wait_idle=False):
         if self.arm.is_connected:
             # convert to str from bytes
-            # 将字符串转换为字节
             if isinstance(msg, bytes):
                 msg = str(msg, 'utf-8')
             
@@ -203,7 +202,6 @@ class MirobotManager():
             msg = msg.strip()
 
             # check if this is supposed to be a variable command and fail if not
-            # 如果是数值设置指令，则进行合法性检测
             # if var_command and not re.fullmatch(r'\$\d+=[\d\.]+', msg):
             #     self.logger.exception(MirobotVariableCommandError("Message is not a variable command: " + msg))
 
@@ -212,7 +210,6 @@ class MirobotManager():
             
             # print(f"send_msg wait_ok = {wait_ok}")
             # actually send the message
-            # 返回值是布尔值，代表是否正确发送
             ret = self.arm.device.send(msg,
                                         disable_debug=disable_debug,
                                         terminator=os.linesep,
