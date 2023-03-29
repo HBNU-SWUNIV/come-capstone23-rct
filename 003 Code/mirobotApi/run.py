@@ -14,7 +14,7 @@ if __name__ == "__main__":
     
     print("Instantiate the Mirobot Arm instance")
     arm = WlkataMirobot(portname=PORTNAME)
-    
+
     # Mirobot Arm Multi-axis executing
     print("Homing start")
 

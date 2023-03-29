@@ -43,6 +43,7 @@ MIN_6, MAX_6 = -345 , 345
 
 JOINT_ANGLE = 3
 
+SPEED = 500
 # Need Setting
 PORTNAME :str = "Your Mirobot PORT"
 HOST :str = "Your IP ADDRESS"
