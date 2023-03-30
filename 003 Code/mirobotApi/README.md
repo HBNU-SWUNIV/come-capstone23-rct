@@ -1,7 +1,7 @@
 # Mirobot API
 ## 1. Mirobot 설정
 1. Mirobot 드라이버 설치 `https://www.wlkata.com/pages/download-center`
-<img width="100%", src= "https://user-images.githubusercontent.com/89232601/228711820-224590ed-dfb3-4339-85db-ffd26e1ca3d5.JPG">
+![이미지1](https://user-images.githubusercontent.com/89232601/228711820-224590ed-dfb3-4339-85db-ffd26e1ca3d5.JPG)
 
 ## 2. 가상환경 설정
 1. python 3.8 버전 설치 필요
