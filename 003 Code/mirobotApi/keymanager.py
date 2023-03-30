@@ -5,7 +5,6 @@ from mirobotmanager import MirobotManager
 import asyncio
 
 class Keymanager(MirobotManager):
-
     async def _setAxis(self) -> None:
         """
         키보드 입력을 통해 로봇의 관절을 조종하는 함수.

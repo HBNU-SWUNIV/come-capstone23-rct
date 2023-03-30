@@ -8,6 +8,7 @@ class MirobotManager():
         self.default_speed = 500
         
     async def AxisControl(self, key) -> None:
+        
         """
         조종 데이터를 기반으로 머니퓰레이터를 제어.
         """
