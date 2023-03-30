@@ -14,41 +14,40 @@ class MirobotManager():
         print(f"{key} pressed, angle : {self.getCurrentAngle()}")
 
         if key == KUP_1:
-           self.set_joint_angle({1:JOINT_ANGLE}, 
-                                    is_relative=True, speed= 500, wait_ok=False)        
+           self.set_joint_angle({1:JOINT_ANGLE}, is_relative= True, speed= SPEED)        
 
         elif key == KDOWN_1:
-            self.set_joint_angle({1:-JOINT_ANGLE}, is_relative=True)    
+            self.set_joint_angle({1:-JOINT_ANGLE}, is_relative=True, speed= SPEED)    
                 
         elif key == KUP_2:
-            self.set_joint_angle({2:JOINT_ANGLE}, is_relative=True)
+            self.set_joint_angle({2:JOINT_ANGLE}, is_relative=True, speed= SPEED)
             
         elif key == KDOWN_2:
-            self.set_joint_angle({2:-JOINT_ANGLE}, is_relative=True)            
+            self.set_joint_angle({2:-JOINT_ANGLE}, is_relative=True, speed= SPEED)            
 
         elif key == KUP_3:
-            self.set_joint_angle({3:JOINT_ANGLE}, is_relative=True) 
+            self.set_joint_angle({3:JOINT_ANGLE}, is_relative=True, speed= SPEED) 
                         
         elif key == KDOWN_3:
-            self.set_joint_angle({3:-JOINT_ANGLE}, is_relative=True) 
+            self.set_joint_angle({3:-JOINT_ANGLE}, is_relative=True, speed= SPEED) 
 
         elif key == KUP_4:
-            self.set_joint_angle({4:JOINT_ANGLE}, is_relative=True)
+            self.set_joint_angle({4:JOINT_ANGLE}, is_relative=True, speed= SPEED)
                                                 
         elif key == KDOWN_4:
-            self.set_joint_angle({4:-JOINT_ANGLE}, is_relative=True)
+            self.set_joint_angle({4:-JOINT_ANGLE}, is_relative=True, speed= SPEED)
 
         elif key == KUP_5:
-            self.set_joint_angle({5:JOINT_ANGLE}, is_relative=True) 
+            self.set_joint_angle({5:JOINT_ANGLE}, is_relative=True, speed= SPEED) 
 
         elif key == KDOWN_5:
-            self.set_joint_angle({5:-JOINT_ANGLE}, is_relative=True) 
+            self.set_joint_angle({5:-JOINT_ANGLE}, is_relative=True, speed= SPEED) 
 
         elif key == KUP_6:
-            self.set_joint_angle({6:JOINT_ANGLE}, is_relative=True)
+            self.set_joint_angle({6:JOINT_ANGLE}, is_relative=True, speed= SPEED)
 
         elif key == KDOWN_6:
-            self.set_joint_angle({6:-JOINT_ANGLE}, is_relative=True)
+            self.set_joint_angle({6:-JOINT_ANGLE}, is_relative=True, speed= SPEED)
             
         elif key == ENDEF_1:
             self.arm.pump_suction()
