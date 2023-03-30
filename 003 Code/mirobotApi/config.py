@@ -17,18 +17,6 @@ KUP_6, KDOWN_6 = "left", "right"
 
 ENDEF_1, ENDEF_2 , ENDEF_3= "space", "ctrl", "alt"
 
-# MIN_1, MAX_1 = -1 , 155
-
-# MIN_2, MAX_2 = -1 , 65
-
-# MIN_3, MAX_3 = -165 , 1
-
-# MIN_4, MAX_4 =  -345 , 345
-
-# MIN_5, MAX_5 =  -195 , 25
-
-# MIN_6, MAX_6 = -355 , 355
-
 MIN_1, MAX_1 = -85 , 145
 
 MIN_2, MAX_2 = -25 , 55
@@ -44,6 +32,7 @@ MIN_6, MAX_6 = -345 , 345
 JOINT_ANGLE = 3
 
 SPEED = 500
+
 # Need Setting
 PORTNAME :str = "Your Mirobot PORT"
 HOST :str = "Your IP ADDRESS"
