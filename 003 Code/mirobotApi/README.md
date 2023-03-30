@@ -1,7 +1,10 @@
 # Mirobot API
 ## 1. Mirobot 설정
-1. Mirobot 드라이버 설치 `https://www.wlkata.com/pages/download-center`
-![이미지1](https://user-images.githubusercontent.com/89232601/228711820-224590ed-dfb3-4339-85db-ffd26e1ca3d5.JPG)
+1. [Mirobot 드라이버 설치](https://www.wlkata.com/pages/download-center)
+   <img width="80%" src="https://user-images.githubusercontent.com/89232601/228711820-224590ed-dfb3-4339-85db-ffd26e1ca3d5.JPG"/>
+
+2. Mirobot과 PC 연결 후 장치관리자에서 포트 번호 확인(CH340)
+   <img width="80%" src="https://user-images.githubusercontent.com/89232601/228714070-c5c13708-d18a-483d-8446-4f42f33b6c1b.JPG"/>
 
 ## 2. 가상환경 설정
 1. python 3.8 버전 설치 필요
@@ -9,7 +12,9 @@
 3. 가상환경 실행
    1. 윈도우 : `venv\Scripts\activate`
    2. 리눅스, 맥 : `source venv/bin/activate`
-4. 다음 명령어로 라이브러리 설치
+<img width="80%" src="https://user-images.githubusercontent.com/89232601/228713185-62edffe2-7ca8-4871-ac10-f6c6f6752210.JPG"/>
+
+1. 다음 명령어로 라이브러리 설치
 ```
 pip3 install -r requirements.txt
 ```
