@@ -8,6 +8,11 @@ class MirobotManager():
         self.default_speed = 500
         
     async def AxisControl(self, key) -> None:
+        """조종 데이터를 기반으로 머니퓰레이터 제어
+
+        Args:
+            key (str): Keyboard, Remote Control info
+        """
         
         """
         조종 데이터를 기반으로 머니퓰레이터를 제어.
@@ -65,9 +70,12 @@ class MirobotManager():
             print("Unassigned key!") 
     
     def getCurrentPosition(self) -> str:
+        """Mirobot Arm의 현재 좌표를 반환
+
+        Returns:
+            str: position = {"x": x, "y": y, "z": z, "roll": roll, "pitch": pitch, "yaw": yaw}
         """
-        미로봇의 현재 좌표를 반환
-        """
+
         self.arm.get_status()
         position = {"x" : self.arm.status.cartesian.x, "y" : self.arm.status.cartesian.y, "z" : self.arm.status.cartesian.z,
                     "roll" : self.arm.status.cartesian.roll, "pitch" : self.arm.status.cartesian.pitch, "yaw" : self.arm.status.cartesian.yaw}
@@ -75,9 +83,12 @@ class MirobotManager():
         return text
 
     def getCurrentAngle(self) -> str:
+        """Mirobot Arm의 현재 관절 각도를 반환
+
+        Returns:
+            str: {"1": joint4, "2": joint5, "3": joint6, "4": joint1, "5": joint2, "6": joint3}
         """
-        미로봇의 현재 관절 각도를 반환
-        """
+        
         self.arm.get_status()
         angle = {"1" : self.arm.angle.joint4, "2" : self.arm.angle.joint5, "3" : self.arm.angle.joint6,
                     "4" : self.arm.angle.joint1, "5" : self.arm.angle.joint2, "6" : self.arm.angle.joint3}
@@ -85,10 +96,15 @@ class MirobotManager():
         return angle
         
     def maxAngle(self, key) -> bool:
+        """미로봇이 가동할 수 있는 최대각도를 벗어나면 예외처리
+
+        Args:
+            key (str): Keyboard, Remote Control info
+
+        Returns:
+            bool: 각도 초과 여부 반환(True/False)
         """
-        미로봇이 가동할 수 있는 최대각도를 벗어나면 예외처리
-        """
-        
+ 
         self.arm.get_status()
         
         angle = self.getCurrentAngle()
