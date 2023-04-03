@@ -1,7 +1,7 @@
 import json
 import zmq
-# import zmq.asyncio
-# import asyncio
+import zmq.asyncio
+import asyncio
 from mirobotmanager import MirobotManager
 from config import *
 
@@ -10,11 +10,14 @@ class Remotemanager(MirobotManager):
     def __init__(self, arm) -> None:
         super().__init__(arm)
         print("ZMQ recieve Initialized")
-
-        ### ZMQ Subscribe
-        # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-        # self.context = zmq.asyncio.Context()
-        self.context = zmq.Context()
+        
+        # Asyncio ZMQ Object
+        self.context = zmq.asyncio.Context()
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+        
+        # Default ZMQ Object
+        # self.context = zmq.Context()
+        
         self.socket = self.context.socket(zmq.SUB)
         self.socket.setsockopt_string(zmq.SUBSCRIBE, "")
         self.socket.connect(f"tcp://{HOST}:{PORT}")
@@ -35,7 +38,7 @@ class Remotemanager(MirobotManager):
             self.message = self.socket.recv_string()
             print(f"Received message: {self.message}")
             
-            self._AxisControl(self.message)
+            self.AxisControl(self.message)
 
             # else:
             # if self.maxAngle(self.message):
@@ -48,8 +51,10 @@ class Remotemanager(MirobotManager):
                 # await asyncio.create_task(self.AxisControl(self.message))
                 # self._AxisControl(self.message)
                 # pass
-            
-            
-            
     
-    
+    async def _remoteRecv(self):
+        while True:
+            self.message = await self.socket.recv_string()
+            print(f"Received message: {self.message}")
+            
+            await self.AxisControl(self.message)
