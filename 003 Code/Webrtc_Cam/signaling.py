@@ -20,6 +20,10 @@ def ok():
 # 전송하는 카메라 데이터 저장 
 @app.route('/offer', methods=['POST'])
 def offer():
+    """
+       Offer에서 제안하는 SDP 메시지 내용으로 선언 및 연결 
+
+    """
     if request.form["type"] == "offer":
         data["offer"] = {"id" : request.form['id'], "type" : request.form['type'], "sdp":request.form['sdp']}
         return Response(status=200)
@@ -29,22 +33,27 @@ def offer():
     
 @app.route('/answer', methods=['POST'])
 def answer():
+    """ 
+    Answer에서 제안하는 SDP 메시지 내용으로 선언 및 연결
+    """
     
     req = request.form.to_dict()
     req_key = list(req.keys())
     req_key = req_key[0]
-    #req_result = dict(req_key)
     req_result = json.loads(req_key)
     
     if req_result['type'] == 'Answer':
         data["answer"] = {"id" : req_result['id'], "type" : req_result['type'], "sdp":req_result['sdp']}
-        # print(f'\n Test done {req_result}\n')
         return Response(status=200)
     else : return Response(status=400)
     
 
 @app.route('/get_offer')
 def get_offer():
+    """
+    Offer SDP 데이터 처리
+    
+    """
     # 카메라 데이터 확인
     if "offer" in data:
         # 카메라 데이터 json객체로 저장
@@ -58,6 +67,10 @@ def get_offer():
     
 @app.route('/get_answer')
 def get_answer():
+    """
+    Answer SDP 데이터 처리
+    
+    """
     if "answer" in data:
         j = json.dumps(data["answer"])
         del data["answer"]

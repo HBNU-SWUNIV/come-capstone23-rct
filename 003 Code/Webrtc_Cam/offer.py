@@ -26,6 +26,9 @@ async def main():
     
     
     async def send_video():
+        """
+        Opencv를 활용해 실시간으로 웹캠 불러와서 전송
+        """
         # cap = cv2.VideoCapture("rtsp://192.168.50.119:8554/live?resolution=1920x960")
         cap = cv2.VideoCapture(0)
         
@@ -34,7 +37,7 @@ async def main():
             ret, frame = cap.read(1)
             
             #해상도 줄여서 데이터 크기 축소(화질떨어짐)
-            frame = cv2.resize(frame,(640, 480))
+            frame = cv2.resize(frame,(1024, 720))
             
             if not ret :
                 break
@@ -43,10 +46,9 @@ async def main():
             
             _, buffer = cv2.imencode('.jpg', frame)
             
-            
+        
             img_str = base64.b64encode(buffer).decode('utf-8')
         
-            ###
             
             channel.send(img_str)
                         
@@ -54,6 +56,10 @@ async def main():
 
     @channel.on("open")
     def on_open():
+        
+        """
+        Datachannel Open
+        """
         print("channel opened")
         asyncio.ensure_future(send_video())
         
@@ -63,7 +69,6 @@ async def main():
     r = requests.post(SIGNALING_SERVER_URL + '/offer', data = message)
     print(r.status_code)
     
-    #데이터 전송
     while True:
         resp = requests.get(SIGNALING_SERVER_URL + "/get_answer")
         if resp.status_code == 503:
