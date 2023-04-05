@@ -66,11 +66,11 @@ async def main():
 
     await peer_connection.setLocalDescription(await peer_connection.createOffer())
     message = {"id": ID, "sdp" : peer_connection.localDescription.sdp, "type" : peer_connection.localDescription.type}
-    r = requests.post(SIGNALING_SERVER_URL + '/offer', data = message)
+    r = requests.post(SIGNALING_SERVER_URL + '/signaling/offer', data = message)
     print(r.status_code)
     
     while True:
-        resp = requests.get(SIGNALING_SERVER_URL + "/get_answer")
+        resp = requests.get(SIGNALING_SERVER_URL + "/signaling/get_answer")
         if resp.status_code == 503:
             print("Answer not Ready , trying again")
             await asyncio.sleep(1)

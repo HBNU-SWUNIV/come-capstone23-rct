@@ -49,7 +49,7 @@ async def main():
             
             
         
-    resp = requests.get(SIGNALING_SERVER_URL + "/get_offer")
+    resp = requests.get(SIGNALING_SERVER_URL + "/signaling/get_offer")
     
     if resp.status_code == 200:
         data = resp.json()
@@ -59,7 +59,7 @@ async def main():
             await peer_connection.setLocalDescription(await peer_connection.createAnswer())
             
             message = {"id": ID, "sdp" : peer_connection.localDescription.sdp, "type" : peer_connection.localDescription.type}
-            r = requests.post(SIGNALING_SERVER_URL + '/answer' , data = message)
+            r = requests.post(SIGNALING_SERVER_URL + '/signaling/answer' , data = message)
    
             while True:
                 await asyncio.sleep(1)
