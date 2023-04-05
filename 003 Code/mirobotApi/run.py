@@ -4,7 +4,6 @@ from keymanager import Keymanager
 from remotemanager import Remotemanager
 from config import *
 import asyncio
-import time
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Mirobot Control")
@@ -13,22 +12,27 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     print("Instantiate the Mirobot Arm instance")
-    arm = WlkataMirobot(portname=PORTNAME)
-    
-    # Mirobot Arm Multi-axis executing
-    print("Homing start")
+    try:
+        arm = WlkataMirobot(portname=PORTNAME)
+        # Mirobot Arm Multi-axis executing
+        print("Homing start")
 
-    arm.home()
+        arm.home()
 
-    print("Homing finish")    
-    arm.set_tool_type(WlkataMirobotTool.FLEXIBLE_CLAW)
+        print("Homing finish")    
+        arm.set_tool_type(WlkataMirobotTool.FLEXIBLE_CLAW)
 
-    if args.mode == "keyboard":
-        print("Keyboard Control Mode")
-        # Keymanager(arm)._setJointAngle()
-        asyncio.run(Keymanager(arm)._setAxis())
-        
-    elif args.mode == "remote":
-        print("Remote Control Mode")   
-        Remotemanager(arm).remoteRecv() 
-    
+        if args.mode == "keyboard":
+            print("Keyboard Control Mode")
+            # Keymanager(arm)._setJointAngle()
+            asyncio.run(Keymanager(arm)._setAxis())
+            
+        elif args.mode == "remote":
+            print("Remote Control Mode")   
+            # Default Remote
+            # Remotemanager(arm).remoteRecv() 
+            
+            # Asyncio Remote
+            asyncio.run(Remotemanager(arm)._remoteRecv())
+    except:
+        print("Mirobot is not connected")

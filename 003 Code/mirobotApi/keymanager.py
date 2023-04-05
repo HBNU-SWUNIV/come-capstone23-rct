@@ -5,12 +5,8 @@ from mirobotmanager import MirobotManager
 import asyncio
 
 class Keymanager(MirobotManager):
-
     async def _setAxis(self) -> None:
-        """
-        키보드 입력을 통해 로봇의 관절을 조종하는 함수.
-        키 매핑 : config.py
-        종료 : 키패드 1
+        """키보드 모드. 키보드 입력을 통해 Mirobot의 Joint Angle 이동
         """
         while True:
             key = keyboard.read_key()
