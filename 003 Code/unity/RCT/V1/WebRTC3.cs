@@ -29,7 +29,7 @@ public class WebRTC3 : MonoBehaviour
     }
 
     private string ID = "answerer01";
-    private string SIGNALING_SERVER_URL = "http://192.168.50.85:8000";
+    private string SIGNALING_SERVER_URL = "http://192.168.50.85:8000/signaling";
 
     private string[] STUNSERVER = { "stun:stun.l.google.com:19302" };
     public UnityWebRequest webRequest;
@@ -104,15 +104,11 @@ public class WebRTC3 : MonoBehaviour
             {
                 
                 var message = System.Text.Encoding.UTF8.GetString(bytes);
-                // Debug.Log(message);
-                
-                // byte[] image_byte = Convert.FromBase64String(message);
-                // // Decode the received data as an image
+            
                 Texture2D texture = new Texture2D(2, 2);
                 
                 texture.LoadImage(Convert.FromBase64String(System.Text.Encoding.UTF8.GetString(bytes)));
 
-                // Apply the texture to the sphere
                 cuberenderer.material.mainTexture = texture;
                 cuberenderer.enabled = true;
             };
@@ -137,7 +133,7 @@ public class WebRTC3 : MonoBehaviour
         message.sdp = desc.sdp;
         
         string json = JsonUtility.ToJson(message);
-
+        Debug.Log("Post json\n"+json);
         using (UnityWebRequest www = UnityWebRequest.Post(SIGNALING_SERVER_URL + "/answer", json))
         {
             yield return www.SendWebRequest();

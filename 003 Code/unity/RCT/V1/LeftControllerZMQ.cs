@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.XR;
 using NetMQ.Sockets;
 using NetMQ;
+using System.Threading.Tasks;
+using System.Threading;
 
 public class LeftControllerZMQ : MonoBehaviour
 {
@@ -11,10 +13,14 @@ public class LeftControllerZMQ : MonoBehaviour
     public InputDevice rightController;
 
     public PublisherSocket client;
-    private bool leftButton1 = false;
-    private bool rightButton1 = false;
-    private bool rightButton2 = false;
-
+    private bool left1_previousButtonState;
+    private bool left1_currentButtonState;
+    private bool left2_previousButtonState;
+    private bool left2_currentButtonState;
+    private bool right1_previousButtonState;
+    private bool right1_currentButtonState;
+    private bool right2_previousButtonState;
+    private bool right2_currentButtonState;
     void Start()
     {
         Debug.Log("Start.");
@@ -22,12 +28,59 @@ public class LeftControllerZMQ : MonoBehaviour
         checksocket();
         InputDevices.deviceConnected += OnDeviceConnected;
         TryInitialize();
+        left1_previousButtonState = false;
+        left1_currentButtonState = false;
+        left2_previousButtonState = false;
+        left2_currentButtonState = false;
+        right1_previousButtonState = false;
+        right1_currentButtonState = false;
+        right2_previousButtonState = false;
+        right2_currentButtonState = false;
         
     }
 
     void Update()
     {
-        StartCoroutine(manual_stick_data());
+        manual_stick_data();
+
+        leftController.TryGetFeatureValue(CommonUsages.primaryButton, out left1_currentButtonState);
+        
+        if (left1_currentButtonState != left1_previousButtonState)
+        {
+            Debug.Log("Left button 1 pressed");
+            client.SendFrame("ctrl");
+            left1_previousButtonState = left1_currentButtonState ;
+      
+        }
+ 
+        leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out left2_currentButtonState);
+        if (left2_currentButtonState != left2_previousButtonState)
+        {
+            Debug.Log("Left button 2 pressed");
+            left2_previousButtonState = left2_currentButtonState;
+            
+        }
+
+        rightController.TryGetFeatureValue(CommonUsages.primaryButton, out right1_currentButtonState);
+        {
+            if (right1_currentButtonState != right1_previousButtonState)
+            {
+                Debug.Log("Right button 1 pressed");
+                client.SendFrame("space");
+                right1_previousButtonState = right1_currentButtonState;
+            }
+        }
+
+        rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out right2_currentButtonState);
+        {
+            if (right2_currentButtonState != right2_previousButtonState)
+            {
+                Debug.Log("Right button 2 pressed");
+                client.SendFrame("alt");
+                right2_previousButtonState = right2_currentButtonState;
+               
+            }
+         }
     }
 
     void OnDestroy()
@@ -68,154 +121,76 @@ public class LeftControllerZMQ : MonoBehaviour
     {
         client = new PublisherSocket();
         client.Bind("tcp://*:11012");
+        
 
     } 
 
-    // async void manual_stick_data()
-    // {
-    //     await T
-    // }
-
-    IEnumerator manual_stick_data()
+    async void manual_stick_data()
     {
         if (leftController.isValid)
         {
-  
-            Debug.Log("left controller connected and ....");
-
             Vector2 leftStick;
             if (leftController.TryGetFeatureValue(CommonUsages.primary2DAxis, out leftStick))
             {
                 
-                if (leftStick[1] > 0.999)
+                if (leftStick[1] > 0.998)
                 {
                     Debug.Log("w: "+leftStick[1]);
                     client.SendFrame("w");
-                    yield return new WaitForSecondsRealtime(60); 
                 }
 
-                if(leftStick[1] < -0.999)
+                if(leftStick[1] < -0.998)
                 {
                     Debug.Log("s:"+leftStick[1]);
                     client.SendFrame("s");
-                    yield return new WaitForSeconds(60);
                 }
 
-                if(leftStick[0] > 0.999)
-                {
-                    Debug.Log("a:"+leftStick[0]);
-                    client.SendFrame("a");
-                    yield return new WaitForSeconds(60);
-                }
-
-                if(leftStick[0] < -0.999)
+                if(leftStick[0] > 0.9)
                 {
                     Debug.Log("d:"+leftStick[0]);
                     client.SendFrame("d");
-                    yield return new WaitForSeconds(60);
                 }
-                
-            }
 
-            // Check left button presses
-            
-            if (leftController.TryGetFeatureValue(CommonUsages.primaryButton, out leftButton1) && leftButton1)
-            {
-                if (leftButton1)
+                if(leftStick[0] < -0.9)
                 {
-                    Debug.Log("Left button 1 pressed");
-                    client.SendFrame("ctrl");
-                    leftButton1 = false;
-                    yield return null;
+                    Debug.Log("a:"+leftStick[0]);
+                    client.SendFrame("a");
                 }
-                
-            }
-
-            bool leftButton2;
-            if (leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out leftButton2) && leftButton2)
-            {
-                Debug.Log("Left button 2 pressed");
-                
             }
 
         }
-        leftButton1 = false;
+        // leftButton1 = false;
         
         if (rightController.isValid)
             {
-                Debug.Log("right controller connected and ....");
-
                 // Get right stick position
                 Vector2 rightStick;
                 if (rightController.TryGetFeatureValue(CommonUsages.primary2DAxis, out rightStick))
                 {
-                    Debug.Log("Right stick position: ");
-                    if (rightStick[1] > 0.999)
+                    if (rightStick[1] > 0.998)
                     {
-                 
                         client.SendFrame("up");
-                        yield return new WaitForSecondsRealtime(60); 
                     }
 
-                    if(rightStick[1] < -0.999)
+                    if(rightStick[1] < -0.998)
                     {
-                    
                         client.SendFrame("down");
-                        yield return new WaitForSeconds(60);
                     }
 
-                    if(rightStick[0] > 0.999)
+                    if(rightStick[0] > 0.998)
                     {
-                 
                         client.SendFrame("left");
-                        yield return new WaitForSeconds(60);
                     }
 
-                    if(rightStick[0] < -0.999)
+                    if(rightStick[0] < -0.998)
                     {
-                     
                         client.SendFrame("right");
-                        yield return new WaitForSeconds(60);
                     }
                 }
-
-                // Check right button presses
-                
-                if (rightController.TryGetFeatureValue(CommonUsages.primaryButton, out rightButton1) && rightButton1)
-                {
-                    if (rightButton1)
-                    {
-                        Debug.Log("Right button 1 pressed");
-                        client.SendFrame("space");
-                        rightButton1 = false;
-                        yield return null;
-                    }
-                    
-                }
-
-                
-                if (rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out rightButton2) && rightButton2)
-                {
-                    if (rightButton2)
-                    {
-                        Debug.Log("Right button 2 pressed");
-                        client.SendFrame("alt");
-                        rightButton2 = false;
-                        yield return null;
-                    }
-                    
-                }
-
-
 
             }
-        rightButton1 = false;
-        rightButton2 = false;
-
-        yield return new WaitForSeconds(60);
-
+        await Task.CompletedTask;
     }
-
 
     void OnDeviceConnected(InputDevice device)
     {
@@ -229,7 +204,7 @@ public class LeftControllerZMQ : MonoBehaviour
             Debug.Log("rightdevice");
             rightController = device;
         }
-
+        
     }
 
 }
