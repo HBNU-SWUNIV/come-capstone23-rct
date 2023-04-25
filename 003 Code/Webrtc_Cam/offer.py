@@ -33,7 +33,7 @@ async def main():
         cap = cv2.VideoCapture(0)
         
         while True:
-            
+
             ret, frame = cap.read(1)
             
             #해상도 줄여서 데이터 크기 축소(화질떨어짐)
@@ -66,6 +66,7 @@ async def main():
 
     await peer_connection.setLocalDescription(await peer_connection.createOffer())
     message = {"id": ID, "sdp" : peer_connection.localDescription.sdp, "type" : peer_connection.localDescription.type}
+    print(message)
     # r = requests.post(SIGNALING_SERVER_URL + '/offer', data = message)
     r = requests.post(SIGNALING_SERVER_URL + '/signaling/offer', data = message)
     print(r.status_code)
@@ -78,16 +79,17 @@ async def main():
             await asyncio.sleep(1)
         elif resp.status_code == 200:
             data = resp.json()
-            if data["type"] == "Answer":
-                data["type"] = "answer"
-                rd = RTCSessionDescription(sdp = data["sdp"], type=data["type"])
-                await peer_connection.setRemoteDescription(rd)
-                print(peer_connection.remoteDescription)
-                while True:
-                    await asyncio.sleep(1)
-            else:
-                print("Wrong type")
-            break
+            if data["id"] == "answerer01":
+                if data["type"] == "Answer":
+                    data["type"] = "answer"
+                    rd = RTCSessionDescription(sdp = data["sdp"], type=data["type"])
+                    await peer_connection.setRemoteDescription(rd)
+                    print(peer_connection.remoteDescription)
+                    while True:
+                        await asyncio.sleep(1)
+                else:
+                    print("Wrong type")
+                break
         print(resp.status_code)
     
 asyncio.run(main())
