@@ -90,6 +90,5 @@ async def main():
                 else:
                     print("Wrong type")
                 break
-        print(resp.status_code)
     
 asyncio.run(main())
