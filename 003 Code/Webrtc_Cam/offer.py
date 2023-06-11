@@ -53,6 +53,8 @@ async def main():
             channel.send(img_str)
                         
             await asyncio.sleep(0.1)
+            
+            
 
     @channel.on("open")
     def on_open():
@@ -90,5 +92,11 @@ async def main():
                 else:
                     print("Wrong type")
                 break
-    
-asyncio.run(main())
+
+
+try:
+    asyncio.run(main())
+except:
+    asyncio.run(main())
+finally:
+    asyncio.run(main())
