@@ -66,10 +66,10 @@ async def main():
 
     await peer_connection.setLocalDescription(await peer_connection.createOffer())
     message = {"id": ID, "sdp" : peer_connection.localDescription.sdp, "type" : peer_connection.localDescription.type}
-    print(message)
+
     # r = requests.post(SIGNALING_SERVER_URL + '/offer', data = message)
     r = requests.post(SIGNALING_SERVER_URL + '/signaling/offer', data = message)
-    print(r.status_code)
+
     
     while True:
         # resp = requests.get(SIGNALING_SERVER_URL + "/get_answer")
