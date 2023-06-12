@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import base64
 from config import *
-from speedtest import Speedtest
+
 
 ID = "offerer01"
 # os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "dummy"
@@ -72,6 +72,7 @@ async def main():
 
     await peer_connection.setLocalDescription(await peer_connection.createOffer())
     message = {"id": ID, "sdp" : peer_connection.localDescription.sdp, "type" : peer_connection.localDescription.type}
+
     # r = requests.post(SIGNALING_SERVER_URL + '/offer', data = message)
     r = requests.post(SIGNALING_SERVER_URL + '/signaling/offer', data = message)
 
@@ -84,6 +85,7 @@ async def main():
             await asyncio.sleep(1)
         elif resp.status_code == 200:
             data = resp.json()
+            print(data)
             if data["id"] == "answerer01":
                 if data["type"] == "Answer":
                     data["type"] = "answer"
