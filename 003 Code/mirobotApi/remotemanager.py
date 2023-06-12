@@ -55,7 +55,7 @@ class Remotemanager(MirobotManager):
     async def _remoteRecv(self):
         while True:
             self.message = await self.socket.recv_string()
-            print(1)
-            print(f"Received message: {self.message}")
+            # print(1)
+            print(f"Control Data : {self.message}")
             
             await self.AxisControl(self.message)
