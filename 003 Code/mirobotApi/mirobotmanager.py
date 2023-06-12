@@ -1,6 +1,7 @@
 from config import *
 import asyncio
 import re
+import os
 
 class MirobotManager():
     def __init__(self, arm) -> None:
@@ -17,57 +18,61 @@ class MirobotManager():
         """
         조종 데이터를 기반으로 머니퓰레이터를 제어.
         """
-        print(f"{key} pressed, angle : {self.getCurrentAngle()}")
+        print(f"{key} 키 입력됨, 현재 미로봇 각도 : {await self.getCurrentAngle()}")
 
-        if key == KUP_1:
-           self.set_joint_angle({1:JOINT_ANGLE}, is_relative= True, speed= SPEED)        
-
-        elif key == KDOWN_1:
-            self.set_joint_angle({1:-JOINT_ANGLE}, is_relative=True, speed= SPEED)    
-                
-        elif key == KUP_2:
-            self.set_joint_angle({2:JOINT_ANGLE}, is_relative=True, speed= SPEED)
-            
-        elif key == KDOWN_2:
-            self.set_joint_angle({2:-JOINT_ANGLE}, is_relative=True, speed= SPEED)            
-
-        elif key == KUP_3:
-            self.set_joint_angle({3:JOINT_ANGLE}, is_relative=True, speed= SPEED) 
-                        
-        elif key == KDOWN_3:
-            self.set_joint_angle({3:-JOINT_ANGLE}, is_relative=True, speed= SPEED) 
-
-        elif key == KUP_4:
-            self.set_joint_angle({4:JOINT_ANGLE}, is_relative=True, speed= SPEED)
-                                                
-        elif key == KDOWN_4:
-            self.set_joint_angle({4:-JOINT_ANGLE}, is_relative=True, speed= SPEED)
-
-        elif key == KUP_5:
-            self.set_joint_angle({5:JOINT_ANGLE}, is_relative=True, speed= SPEED) 
-
-        elif key == KDOWN_5:
-            self.set_joint_angle({5:-JOINT_ANGLE}, is_relative=True, speed= SPEED) 
-
-        elif key == KUP_6:
-            self.set_joint_angle({6:JOINT_ANGLE}, is_relative=True, speed= SPEED)
-
-        elif key == KDOWN_6:
-            self.set_joint_angle({6:-JOINT_ANGLE}, is_relative=True, speed= SPEED)
-            
-        elif key == ENDEF_1:
-            self.arm.pump_suction()
-            # self.arm.gripper_open()
-            
-        elif key == ENDEF_2:
-            self.arm.pump_blowing()
-            # self.arm.gripper_close()
-            
-        elif key == ENDEF_3:
-            self.arm.pump_off()
-            
+        if await self.maxAngle(key):
+            print("이동 가능 범위를 벗어났습니다!")
+        
         else:
-            print("Unassigned key!") 
+            if key == KUP_1:
+                self.set_joint_angle({1:JOINT_ANGLE}, is_relative= True, speed= SPEED)        
+
+            elif key == KDOWN_1:
+                self.set_joint_angle({1:-JOINT_ANGLE}, is_relative=True, speed= SPEED)    
+                    
+            elif key == KUP_2:
+                self.set_joint_angle({2:JOINT_ANGLE}, is_relative=True, speed= SPEED)
+                
+            elif key == KDOWN_2:
+                self.set_joint_angle({2:-JOINT_ANGLE}, is_relative=True, speed= SPEED)            
+
+            elif key == KUP_3:
+                self.set_joint_angle({3:JOINT_ANGLE}, is_relative=True, speed= SPEED) 
+                            
+            elif key == KDOWN_3:
+                self.set_joint_angle({3:-JOINT_ANGLE}, is_relative=True, speed= SPEED) 
+
+            elif key == KUP_4:
+                self.set_joint_angle({4:JOINT_ANGLE}, is_relative=True, speed= SPEED)
+                                                    
+            elif key == KDOWN_4:
+                self.set_joint_angle({4:-JOINT_ANGLE}, is_relative=True, speed= SPEED)
+
+            elif key == KUP_5:
+                self.set_joint_angle({5:JOINT_ANGLE}, is_relative=True, speed= SPEED) 
+
+            elif key == KDOWN_5:
+                self.set_joint_angle({5:-JOINT_ANGLE}, is_relative=True, speed= SPEED) 
+
+            elif key == KUP_6:
+                self.set_joint_angle({6:JOINT_ANGLE}, is_relative=True, speed= SPEED)
+
+            elif key == KDOWN_6:
+                self.set_joint_angle({6:-JOINT_ANGLE}, is_relative=True, speed= SPEED)
+                
+            elif key == ENDEF_1:
+                self.arm.pump_suction()
+                # self.arm.gripper_open()
+                
+            elif key == ENDEF_2:
+                self.arm.pump_blowing()
+                # self.arm.gripper_close()
+                
+            elif key == ENDEF_3:
+                self.arm.pump_off()
+                
+            else:
+                print("지정되지 않은 키입니다!") 
     
     def getCurrentPosition(self) -> str:
         """Mirobot Arm의 현재 좌표를 반환
@@ -82,7 +87,7 @@ class MirobotManager():
         text = f"Current Position : {position}"
         return text
 
-    def getCurrentAngle(self) -> str:
+    async def getCurrentAngle(self) -> str:
         """Mirobot Arm의 현재 관절 각도를 반환
 
         Returns:
@@ -95,7 +100,7 @@ class MirobotManager():
         
         return angle
         
-    def maxAngle(self, key) -> bool:
+    async def maxAngle(self, key) -> bool:
         """미로봇이 가동할 수 있는 최대각도를 벗어나면 예외처리
 
         Args:
@@ -104,10 +109,8 @@ class MirobotManager():
         Returns:
             bool: 각도 초과 여부 반환(True/False)
         """
- 
-        self.arm.get_status()
-        
-        angle = self.getCurrentAngle()
+
+        angle = await self.getCurrentAngle()
         
         
         if key == KUP_1:
