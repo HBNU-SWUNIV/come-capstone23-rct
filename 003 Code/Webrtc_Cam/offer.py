@@ -21,7 +21,6 @@ async def main():
         RTCIceServer(urls=["stun:stun.l.google.com:19302"])
     ])
     
-    print(requests.get("stun:stun.l.google.com:19302").json()['ip'])
 
     print("Starting")
     peer_connection = RTCPeerConnection(configuration=config)
@@ -41,10 +40,10 @@ async def main():
             
             #해상도 줄여서 데이터 크기 축소(화질떨어짐)
             # if sp_mb > 50:
-                
+        
             #     frame = cv2.resize(frame,(1024, 720))
             # else:
-            #     frame = cv2.resize(frame,(720,560))
+            #      frame = cv2.resize(frame,(720,560))
             
             frame = cv2.resize(frame,(1024, 720))    
             
