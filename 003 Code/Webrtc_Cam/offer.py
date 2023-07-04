@@ -38,11 +38,7 @@ async def main():
 
             ret, frame = cap.read()
             
-<<<<<<< Updated upstream
-=======
             #해상도 줄여서 데이터 크기 축소(화질떨어짐)
-            frame = cv2.resize(frame,(960, 720))
->>>>>>> Stashed changes
             
             frame = cv2.resize(frame,(1024, 720))  
               
