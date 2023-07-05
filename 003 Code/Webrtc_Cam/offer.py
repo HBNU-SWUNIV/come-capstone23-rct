@@ -47,6 +47,17 @@ async def main():
             
             # Encode the frame in base64
             
+            for y in range(0, 1024, block_size):
+                for x in range(0, 720, block_size):
+                    # 블록 추출
+                    block = frame[y:y+block_size, x:x+block_size]
+                    
+                    # 블록 처리
+                    processed_block = cv2.filter2D(block, -1, np.ones((3, 3)))
+                    
+                    # 처리된 블록을 원본 프레임에 적용
+                    frame[y:y+block_size, x:x+block_size] = processed_block
+            
             _, buffer = cv2.imencode('.jpg', frame)
             img_str = base64.b64encode(buffer).decode('utf-8')
         
