@@ -48,7 +48,7 @@ async def main():
             _, buffer = cv2.imencode('.jpg', frame)
             img_str = base64.b64encode(buffer).decode('utf-8')
         
-            
+            #git flwo
             channel.send(img_str)
                         
             await asyncio.sleep(0.045)
