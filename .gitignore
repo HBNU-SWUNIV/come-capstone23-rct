@@ -127,3 +127,14 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+RCT_v(2.5)/[Ll]ibrary/
+RCT_v(2.5)/[Tt]emp/
+RCT_v(2.5)/[Oo]bj/
+RCT_v(2.5)/[Bb]uild/
+RCT_v(2.5)/[Ll]ogs/
+RCT_v(2.5)/[Mm]emoryCatures/
+
+!RCT_v(2.5)/[Aa]ssets/**/*.metadata
+
+RCT_v(2.5)/[Aa]ssets/Plugins/Editor/JetBrains*
