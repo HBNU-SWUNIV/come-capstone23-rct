@@ -51,7 +51,7 @@ async def main():
             #git flwo
             channel.send(img_str)
                         
-            await asyncio.sleep(0.045)
+            await asyncio.sleep(0.12)
             
     @channel.on("open")
     def on_open():
