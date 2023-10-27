@@ -1,7 +1,7 @@
-git clone시 터미널에서 `git config --system core.longpaths true` 명령어 입력 후 git clone을 해야 함.
-
 
 # 한밭대학교 컴퓨터공학과 RCT팀
+
+<img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white"/><img src="https://img.shields.io/badge/C++-00599C?style=flat&logo=cplusplus&logoColor=white"/><img src="https://img.shields.io/badge/CSharp-512BD4?style=flat&logo=csharp&logoColor=white"/><img src="https://img.shields.io/badge/Unity-000000?style=flat&logo=unity&logoColor=white"/><img src="https://img.shields.io/badge/WebRTC-333333?style=flat&logo=webrtc&logoColor=white"/><img src="https://img.shields.io/badge/Oculus-1C1E20?style=flat&logo=oculus&logoColor=white"/>
 
 **팀 구성**
 - 20181586 김진우
@@ -26,18 +26,46 @@ git clone시 터미널에서 `git config --system core.longpaths true` 명령어
   - ### System Requirements
     - 360 device
       - RICOH THETA V
-
     - WebRTC
     - VR Environment
-    - Manipulator
+      - Unity
+      - Oculus Quest2
+    - Turtlebot3 & OpenManipulatorX
+    - Mirobot
+  
+  - ### 시스템 구성도
+  ![image](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/ff6f8284-7bb3-4237-aba1-a18740bdb346)
+  
+
     
 ## Case Study
   - ### Description
-  
+![image](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/168c7101-6d27-468d-953a-dcea11c0a108)
+
+  - ### [Develop Note](./003%20Code/Develop_Note.md)
+
+ ###  1. Mirobot API
+ - [Mirobot 설정](./003%20Code/mirobotApi/README.md)
+### 2. WebRTC
+ - [WebRTC 설정](./003%20Code/Webrtc_Cam/README.md)
+
+### 3. Turtlebot3&OpenManipulatorX
+ - [Trutlebot3 Qucik Start]()
+
   
 ## Conclusion
-  - ### 인간의 시야와 흡사한 조종 환경을 구사하여 작업자에게 몰입감, 실제와 같은 경험 제공
-  - ### 적은 카메라로 보다 많은 영상 데이터 확보 가능 → 사각지대의 한계 개선
+  - ### 사용자가 직접 조종 하는 것 같은 환경을 구사하여 몰입감 제공 
+  - ### 1대의 카메라로 영상 데이터를 수집하여 사각지대의 한계를 개선
+  - ### 매니퓰레이터를 원격으로 제어하여 작업 환경의 한계 개선
   
 ## Project Outcome
-- ### 20XX 년 OO학술대회 
+- ### 2023년 한국전기전자학회 학술대회 참가
+  ![image](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/abaf5290-3780-4e34-b251-9a80d6b16be7)
+
+
+- ### 2023년 학부생 시뮬레이션 논문 발표 경진대회 참가(금상, 및 가작상 수상)
+  ![상장](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/22a57a9f-6490-49d4-b46a-0deacbfbd138)
+
+
+- ### WSC2023 참가(12.08~12.14 참가 예정)
+
