@@ -40,10 +40,10 @@
   - ### Description
 ![image](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/168c7101-6d27-468d-953a-dcea11c0a108)
 
-  - ### [Develop Note](./003%20Code/mirobotApi/README.md)
+  - ### [Develop Note](./003%20Code/Develop_Note.md)
 
  ###  1. Mirobot API
- - [Mirobot 설정](./003%20Code/README.md)
+ - [Mirobot 설정](./003%20Code/mirobotApi/README.md)
 ### 2. WebRTC
  - [WebRTC 설정](./003%20Code/Webrtc_Cam/README.md)
 
