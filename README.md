@@ -30,8 +30,8 @@
     - VR Environment
       - Unity
       - Oculus Quest2
-    - Turtlebot3 & OpenManipulatorX
-    - Mirobot
+    - TurtleBot3 & OpenManipulatorX
+    - MiroBot
   
   - ### 시스템 구성도
   ![image](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/ff6f8284-7bb3-4237-aba1-a18740bdb346)
@@ -45,12 +45,12 @@
   - ### [Develop Note](./003%20Code/Develop_Note.md)
 
  ###  1. Mirobot API
- - [Mirobot 설정](./003%20Code/mirobotApi/README.md)
+ - [MiroBot 설정](./003%20Code/mirobotApi/README.md)
 ### 2. WebRTC
  - [WebRTC 설정](./003%20Code/Webrtc_Cam/README.md)
 
 ### 3. Turtlebot3&OpenManipulatorX
- - [Trutlebot3 Qucik Start]()
+ - [Turtlebot3 Quick Start]()
 
   
 ## Conclusion
