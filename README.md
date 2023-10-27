@@ -1,5 +1,3 @@
-git clone시 터미널에서 `git config --system core.longpaths true` 명령어 입력 후 git clone을 해야 함.
-
 
 # 한밭대학교 컴퓨터공학과 RCT팀
 
@@ -31,19 +29,31 @@ git clone시 터미널에서 `git config --system core.longpaths true` 명령어
       - Unity
       - Oculus Quest2
     - Turtlebot3 & OpenManipulatorX
+    - Mirobot
   
   - ### 시스템 구성도
-   ![Alt text](image.png)
+  ![image](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/ff6f8284-7bb3-4237-aba1-a18740bdb346)
+  
 
     
 ## Case Study
   - ### Description
 ![image](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/b8107b63-8c46-4dac-8060-81fdc29b52a9)
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mark1. Mirobot & WebRTC  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mark2. Image Processing &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mark3.Turtlebot3&OpenManipulator
+
+ ###  1. Mirobot API
+ - [Mirobot 설정](./003%20Code/README.md)
+### 2. WebRTC
+- [WebRTC 설정](./003%20Code/Webrtc_Cam/README.md)
+
+### 3. Turtlebot3&OpenManipulatorX
+-[Trutlebot3 Qucik Start]()
+
   
 ## Conclusion
-  - ### 인간의 시야와 흡사한 조종 환경을 구사하여 작업자에게 몰입감, 실제와 같은 경험 제공
-  - ### 적은 카메라로 보다 많은 영상 데이터 확보 가능 → 사각지대의 한계 개선
+  - ### 사용자가 직접 조종 하는 것 같은 환경을 구사하여 몰입감 제공 
+  - ### 1대의 카메라로 영상 데이터를 수집하여 사각지대의 한계를 개선
+  - ### 매니퓰레이터를 원격으로 제어하여 작업 환경의 한계 개선
   
 ## Project Outcome
 - ### 2023년 한국전기전자학회 학술대회 참가
