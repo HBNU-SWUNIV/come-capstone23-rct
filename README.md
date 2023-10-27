@@ -26,10 +26,16 @@ git clone시 터미널에서 `git config --system core.longpaths true` 명령어
   - ### System Requirements
     - 360 device
       - RICOH THETA V
-
     - WebRTC
     - VR Environment
-    - Manipulator
+      - Unity
+      - Oculus Quest2
+    - Turtlebot3 & OpenManipulatorX
+  
+  - ### 시스템 구성도
+- ![Alt text](image.png)
+    
+
     
 ## Case Study
   - ### Description
@@ -40,4 +46,7 @@ git clone시 터미널에서 `git config --system core.longpaths true` 명령어
   - ### 적은 카메라로 보다 많은 영상 데이터 확보 가능 → 사각지대의 한계 개선
   
 ## Project Outcome
-- ### 20XX 년 OO학술대회 
+- ### 2023년 한국전기전자학회 학술대회 참가
+- ### 2023년 학부생 시뮬레이션 논문 발표 경진대회 참가(금상, 및 가작상 수상)
+- ### WSC2023 참가(12.08~12.14 참가 예정)
+
