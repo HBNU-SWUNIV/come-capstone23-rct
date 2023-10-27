@@ -33,13 +33,13 @@ git clone시 터미널에서 `git config --system core.longpaths true` 명령어
     - Turtlebot3 & OpenManipulatorX
   
   - ### 시스템 구성도
+   ![Alt text](image.png)
 
-  
     
 ## Case Study
   - ### Description
-
-  
+![image](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/a2a40989-ae1a-4061-affb-59c51663fbc8)
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mark1. Mirobot & WebRTC  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Mark2. Image Processing Algorithm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mark3.Turtlebot3&OpenManipulator
   
 ## Conclusion
   - ### 인간의 시야와 흡사한 조종 환경을 구사하여 작업자에게 몰입감, 실제와 같은 경험 제공
@@ -47,8 +47,11 @@ git clone시 터미널에서 `git config --system core.longpaths true` 명령어
   
 ## Project Outcome
 - ### 2023년 한국전기전자학회 학술대회 참가
+  ![image](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/abaf5290-3780-4e34-b251-9a80d6b16be7)
+
 
 - ### 2023년 학부생 시뮬레이션 논문 발표 경진대회 참가(금상, 및 가작상 수상)
+  ![상장](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/22a57a9f-6490-49d4-b46a-0deacbfbd138)
 
 
 - ### WSC2023 참가(12.08~12.14 참가 예정)
