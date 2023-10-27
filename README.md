@@ -33,12 +33,12 @@ git clone시 터미널에서 `git config --system core.longpaths true` 명령어
     - Turtlebot3 & OpenManipulatorX
   
   - ### 시스템 구성도
-- ![Alt text](image.png)
-    
 
+  
     
 ## Case Study
   - ### Description
+
   
   
 ## Conclusion
@@ -47,6 +47,9 @@ git clone시 터미널에서 `git config --system core.longpaths true` 명령어
   
 ## Project Outcome
 - ### 2023년 한국전기전자학회 학술대회 참가
+
 - ### 2023년 학부생 시뮬레이션 논문 발표 경진대회 참가(금상, 및 가작상 수상)
+
+
 - ### WSC2023 참가(12.08~12.14 참가 예정)
 
