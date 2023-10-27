@@ -1,6 +1,19 @@
 
 # 한밭대학교 컴퓨터공학과 RCT팀
 
+<img src="https://img.shields.io/badge/Python-3776AB?
+          style=flat&logo=python&logoColor=white"/>
+<img src="https://img.shields.io/badge/C++-00599C?
+          style=flat&logo=cplusplus&logoColor=white"/>
+<img src="https://img.shields.io/badge/CSharp-512BD4?
+          style=flat&logo=csharp&logoColor=white"/>
+<img src="https://img.shields.io/badge/Unity-000000?
+          style=flat&logo=unity&logoColor=white"/>
+<img src="https://img.shields.io/badge/WebRTC-333333?
+          style=flat&logo=webrtc&logoColor=white"/>
+<img src="https://img.shields.io/badge/Oculus-1C1E20?
+          style=flat&logo=oculus&logoColor=white"/>
+
 **팀 구성**
 - 20181586 김진우
 - 20181612 김자용
