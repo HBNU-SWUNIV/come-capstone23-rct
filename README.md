@@ -38,8 +38,7 @@
     
 ## Case Study
   - ### Description
-![image](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/b8107b63-8c46-4dac-8060-81fdc29b52a9)
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mark1. Mirobot & WebRTC  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mark2. Image Processing &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mark3.Turtlebot3&OpenManipulator
+![image](https://github.com/HBNU-SWUNIV/come-capstone23-rct/assets/93181869/168c7101-6d27-468d-953a-dcea11c0a108)
 
  ###  1. Mirobot API
  - [Mirobot 설정](./003%20Code/README.md)
