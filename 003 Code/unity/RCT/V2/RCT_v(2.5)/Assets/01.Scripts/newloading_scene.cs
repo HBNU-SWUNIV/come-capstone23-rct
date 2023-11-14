@@ -2,8 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.WebRTC;
+using UnityEngine.UI;
+using UnityEngine.Networking;
+using System.Threading.Tasks;
+using System;
+using System.Text;
 
-public class BlinkingCubes : MonoBehaviour
+public class newloading_scene : MonoBehaviour
 {
     public GameObject[] cubes; // 21개의 큐브 오브젝트 배열
     public float blinkDuration = 0.5f; // 발광 지속 시간 (초)
@@ -15,13 +21,15 @@ public class BlinkingCubes : MonoBehaviour
     private int currentCubeIndex = 0;
     // private bool isBlinking = false;
     private Material originalMaterial;
-    static string nextScene;
+    private string nextScene = "chair_scenes"; // 다음 씬 이름
+
     
     void Start()
     {
         originalMaterial = cubes[0].GetComponent<Renderer>().material;
         StartCoroutine(StartBlinking());
     }
+
 
     IEnumerator StartBlinking()
     {
@@ -51,5 +59,5 @@ public class BlinkingCubes : MonoBehaviour
         SceneManager.LoadScene("chair_scenes");
     }
 
-
+    
 }

@@ -45,6 +45,7 @@ public class WebRTC3 : MonoBehaviour
     public Renderer cuberenderer;
     public GameManager GM;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -74,6 +75,7 @@ public class WebRTC3 : MonoBehaviour
         };
 
         cuberenderer.enabled = false;
+        
         
         StartCoroutine(GetResquest(SIGNALING_SERVER_URL));
 
