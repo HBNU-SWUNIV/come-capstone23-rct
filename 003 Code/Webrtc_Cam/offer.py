@@ -26,6 +26,7 @@ async def main():
     print("Starting")
     peer_connection = RTCPeerConnection(configuration=config)
 
+    # channel = peer_connection.createDataChannel("video")
     channel = peer_connection.createDataChannel("video")
     async def send_video():
         """
@@ -33,6 +34,8 @@ async def main():
         """
         # cap = cv2.VideoCapture("rtsp://192.168.50.119:8554/live?resolution=1920x960")
         cap = cv2.VideoCapture(0)
+        frame_number = 0
+        skip_frames = 3
         
         while True:
             try:
@@ -41,14 +44,19 @@ async def main():
                 frame = cv2.resize(frame,(1920, 1080))  
                 if not ret :
                     break
-                _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
-                img_str = base64.b64encode(buffer).decode('utf-8')
-                channel.send(img_str)        
+                if frame_number % skip_frames == 0:
+                    _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 30])
+                    # img_str = base64.b64encode(buffer).decode('utf-8')
+                    # channel.send(img_str)
+                    channel.send(buffer.tobytes())        
                 await asyncio.sleep(0.10)
-                
             except aiortc.exceptions.InvalidStateError as e:
                 await asyncio.sleep(3)
                 await main()
+            except ConnectionError as e:
+                await asyncio.sleep(3)
+                await main()
+                
     
     @channel.on("open")
     async def on_open():
