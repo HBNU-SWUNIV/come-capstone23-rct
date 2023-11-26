@@ -38,13 +38,13 @@ async def main():
             try:
                 ret, frame = cap.read()
                 #해상도 줄여서 데이터 크기 축소(화질떨어짐)
-                frame = cv2.resize(frame,(1024, 720))  
+                frame = cv2.resize(frame,(1920, 1080))  
                 if not ret :
                     break
                 _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
                 img_str = base64.b64encode(buffer).decode('utf-8')
                 channel.send(img_str)        
-                await asyncio.sleep(0.12)
+                await asyncio.sleep(0.10)
                 
             except aiortc.exceptions.InvalidStateError as e:
                 await asyncio.sleep(3)
