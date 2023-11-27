@@ -11,7 +11,7 @@ from config import *
 
 ID = "answerer01"
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 
 

@@ -10,12 +10,6 @@ from config import *
 
 
 ID = "offerer01"
-# os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "dummy"
-
-# speed = Speedtest()
-# sp_mb = round(speed.download()/1000/1000,1)
-# print(sp_mb)
-
 
 async def main():
     config = RTCConfiguration(iceServers=[
@@ -26,7 +20,6 @@ async def main():
     print("Starting")
     peer_connection = RTCPeerConnection(configuration=config)
 
-    # channel = peer_connection.createDataChannel("video")
     channel = peer_connection.createDataChannel("video")
     async def send_video():
         """
