@@ -6,50 +6,38 @@ import cv2
 import numpy as np
 import socket
 import json
+import pygame
 from config import *
 
 
 ID = "answerer01"
 
-# sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-
-
 async def main():
-
-    config = RTCConfiguration(iceServers=[
-        RTCIceServer(urls=["stun:stun.l.google.com:19302"])
-    ])
     
     print("Starting")
-    peer_connection = RTCPeerConnection(configuration=config)
-    
+    peer_connection = RTCPeerConnection()
 
     @peer_connection.on("datachannel")
     def on_datachannel(channel):
-        
-        channel.send("Hello From Answerer via RTC Datachannel")
-        
+
         @channel.on("message")
         async def on_message(message):
             
+
+            # 영상 데이터 바이너리 형태로 오면 인코딩해서 영상 출력
             binary_data = base64.b64decode(message)
                     
             buf = np.frombuffer(binary_data,  dtype=np.uint8)
-            
-            
-            # sock.sendto(buf, (SOCKET, PORT))
-            
-            
+
+    
             image = cv2.imdecode(buf, cv2.IMREAD_COLOR)
+            
 
             cv2.imshow('image', image)
             
             cv2.waitKey(1)
-            
-            
         
-    resp = requests.get(SIGNALING_SERVER_URL + "/signaling/get_offer")
+    resp = requests.get(SIGNALING_SERVER_URL + "/get_offer")
     
     if resp.status_code == 200:
         data = resp.json()
@@ -59,7 +47,7 @@ async def main():
             await peer_connection.setLocalDescription(await peer_connection.createAnswer())
             
             message = {"id": ID, "sdp" : peer_connection.localDescription.sdp, "type" : peer_connection.localDescription.type}
-            r = requests.post(SIGNALING_SERVER_URL + '/signaling/answer' , data = message)
+            r = requests.post(SIGNALING_SERVER_URL + '/answer' , data = message)
    
             while True:
                 await asyncio.sleep(1)
