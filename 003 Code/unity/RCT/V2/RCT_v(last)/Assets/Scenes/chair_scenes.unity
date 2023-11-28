@@ -2182,7 +2182,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557743641}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6c63f95bce444f4ab66e8d8a24028a5, type: 3}
   m_Name: 
@@ -2190,7 +2190,7 @@ MonoBehaviour:
   Player: {fileID: 557743642}
   canvas: {fileID: 743952348}
   Back_guide: {fileID: 3739035401852299458}
-  no_button: {fileID: 1818589212}
+  no_button: {fileID: 0}
   left_T_text: {fileID: 1047758346}
   left_G_n_text: {fileID: 1308191220}
   left_G_f_text: {fileID: 671621050}
@@ -14510,8 +14510,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Back_guide: {fileID: 3739035401852299458}
-  yes_bt: {fileID: 0}
-  no_bt: {fileID: 0}
+  yes_bt: {fileID: 7087335323513722755}
+  no_bt: {fileID: 1818589212}
 --- !u!114 &3739035401852299520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14531,7 +14531,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3739035401852299458}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
   m_Name: 
@@ -19333,8 +19333,59 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7087335323255536559, guid: 744e9c75cb568ad4a943ab90d3a5fa74, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7087335323513722756}
+    - target: {fileID: 7087335323255536559, guid: 744e9c75cb568ad4a943ab90d3a5fa74, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Back_to_one
+      objectReference: {fileID: 0}
+    - target: {fileID: 7087335323255536559, guid: 744e9c75cb568ad4a943ab90d3a5fa74, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: chair_scene_back_gudie, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7087335323989471133, guid: 744e9c75cb568ad4a943ab90d3a5fa74, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7087335323513722757}
+    - target: {fileID: 7087335323989471133, guid: 744e9c75cb568ad4a943ab90d3a5fa74, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Cancel_to_stay
+      objectReference: {fileID: 0}
+    - target: {fileID: 7087335323989471133, guid: 744e9c75cb568ad4a943ab90d3a5fa74, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: chair_scene_back_gudie, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 744e9c75cb568ad4a943ab90d3a5fa74, type: 3}
+--- !u!1 &7087335323513722755 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9211392003073339684, guid: 744e9c75cb568ad4a943ab90d3a5fa74, type: 3}
+  m_PrefabInstance: {fileID: 7087335323513722754}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7087335323513722756 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7087335323255536562, guid: 744e9c75cb568ad4a943ab90d3a5fa74, type: 3}
+  m_PrefabInstance: {fileID: 7087335323513722754}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7087335323513722755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3abc490e92b21e41b1077eaed619c87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7087335323513722757 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7087335323989471136, guid: 744e9c75cb568ad4a943ab90d3a5fa74, type: 3}
+  m_PrefabInstance: {fileID: 7087335323513722754}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818589212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3abc490e92b21e41b1077eaed619c87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7096982118639290180
 MonoBehaviour:
   m_ObjectHideFlags: 0

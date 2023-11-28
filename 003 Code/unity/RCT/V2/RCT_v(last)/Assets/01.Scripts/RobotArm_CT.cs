@@ -1,9 +1,14 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
-using NetMQ;
-using UnityEngine.UI;
 using NetMQ.Sockets;
+using NetMQ;
+using System.Threading.Tasks;
+using System.Threading;
+using UnityEngine.UI;
+using UnityEngine.Pool;
+
 
 
 public class RobotArm_CT : MonoBehaviour
@@ -72,150 +77,229 @@ public class RobotArm_CT : MonoBehaviour
     int vehicle_speed_back = -1;
     int vehicle_speed_left = 1;
     int vehicle_speed_right = -1;
+    bool user_guide = true;
+    bool back_guide = false;
+    private float fDestroyTime = 0.1f;
+    private float fTickTime;
 
-
-    private void Start()
+    void Start()
     {
         Vehicle_Speed.text = vehicle_speed_gb.ToString() + " | " + vehicle_speed_lr.ToString();
         Current_Direction.text = current_direction_gb + " " + current_direction_lr;
-//         AsyncIO.ForceDotNet.Force();
-//         checksocket();
+        Debug.Log("Start.");
+        AsyncIO.ForceDotNet.Force();
+        checksocket();
+        InputDevices.deviceConnected += OnDeviceConnected;
+        TryInitialize();
         canvas.SetActive(true);
+        Back_guide.SetActive(false);
         playerCamera = Camera.main.transform;
         canvas.transform.position = playerCamera.position + playerCamera.forward * 0.05f;
         canvas.transform.LookAt(playerCamera);
 
-        leftController = GameManager.Instance.leftController;
-        rightController = GameManager.Instance.rightController;
-        client = GameManager.Instance.client;
-
-        StartCoroutine(Check_button());
-        StartCoroutine(manual_stick_data());
-
-        // Check_button();
-
     }
-    // public void Check_button()
-    IEnumerator Check_button()
+
+    void Update()
     {
-        while(true)
+
+
+        manual_stick_data();
+
+        // user_gide => back_guide로 변환
+        leftController.TryGetFeatureValue(CommonUsages.primaryButton, out left1_currentButtonState);
+        if (left1_currentButtonState) //button x
         {
-            leftController.TryGetFeatureValue(CommonUsages.primaryButton, out left1_currentButtonState);
-            if (left1_currentButtonState)
-            {
-                //왼쪽 밑에
-                canvas.SetActive(false);
+            //왼쪽 밑에
 
+            if (back_guide == false)
+            {
+                Back_guide.SetActive(true);
+                // no_button.SetActive(true);
+                Back_guide.transform.LookAt(playerCamera);
+                fTickTime += Time.deltaTime;
+                if ( fTickTime >= fDestroyTime)
+                {
+                    back_guide = true;
+                }   
+
+                
             }
-     
-            leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out left2_currentButtonState);
-            if (left2_currentButtonState)
+            else
             {
-                
-                canvas.SetActive(false);
-                canvas.SetActive(true);
-                canvas.transform.LookAt(playerCamera);
-                
-            }
-
-            rightController.TryGetFeatureValue(CommonUsages.primaryButton, out right1_currentButtonState);
-            {
-                right_G_f_text.GetComponent<Shadow>().effectColor = default;
-                if (right1_currentButtonState)
+                Back_guide.SetActive(false);
+                // no_button.SetActive(false);
+                fTickTime += Time.deltaTime;
+                if ( fTickTime >= fDestroyTime)
                 {
-                    right_G_f_text.GetComponent<Shadow>().effectColor = Color.white;
-                    
-                    button_3 +=1;
-
-                    if (button_3 == 10)
-                    {
-                        Debug.Log("End Effector on/off");
-                        // client.SendFrame("3");
-                        button_3 = 0;
-                        right1_currentButtonState = false; 
+                   back_guide = false;
+                }  
                 
-                    }
-                }
-            }
-
-            rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out right2_currentButtonState);
-            {
-                right_G_n_text.GetComponent<Shadow>().effectColor = default;
-                if (right2_currentButtonState)
-                {
-                    right_G_n_text.GetComponent<Shadow>().effectColor = Color.white;
-                    button_4 +=1;
-
-                    if (button_4 == 10)
-                    {
-                        Debug.Log("End Effector off");
-                        // client.SendFrame("4");
-                        button_4 = 0;
-                        right2_currentButtonState = false;
-                
-                    }
-
-                }
-             }
-
-            leftController.TryGetFeatureValue(CommonUsages.trigger, out left_trigger_on);
-            {
-                
-                if(left_trigger_on != 0)
-                {
-                    
-                    Debug.Log("left_trigger_on");
-                    //  // // 텍스트 커지는 애니메이션
-                    // left_T_text.fontSize = left_T_text.fontSize + 19;
-                    // left_T_text.fontStyle = FontStyle.Bold;
-                    // image 테두리 빛나기
-                    left_T_text.GetComponent<Shadow>().effectColor = Color.white;
-        
-                    
-                    
-                }
-                else{
-                    // left_T_text.fontSize = 26;
-                    // left_T_text.fontStyle = FontStyle.Normal;
-                    left_T_text.GetComponent<Shadow>().effectColor = default;
-                }
             }
-            rightController.TryGetFeatureValue(CommonUsages.trigger, out right_trigger_on);
-            {
-                
-                if(right_trigger_on != 0)
-                {
-                    
-                    Debug.Log("left_trigger_on");
-                    //  // // 텍스트 커지는 애니메이션
-                    // left_T_text.fontSize = left_T_text.fontSize + 19;
-                    // left_T_text.fontStyle = FontStyle.Bold;
-                    // image 테두리 빛나기
-                    right_T_text.GetComponent<Shadow>().effectColor = Color.white;
-        
-                    
-                    
-                }
-                else{
-                    // left_T_text.fontSize = 26;
-                    // left_T_text.fontStyle = FontStyle.Normal;
-                    right_T_text.GetComponent<Shadow>().effectColor = default;
-                }
-            }
+            
 
-            yield return new WaitForSeconds(0.1f);  
         }
+ 
+        leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out left2_currentButtonState);
+        if (left2_currentButtonState) // button y
+        {
+            if (user_guide == true)
+            {
+                canvas.SetActive(false);
+                canvas.transform.LookAt(playerCamera);
+                fTickTime += Time.deltaTime;
+                if ( fTickTime >= fDestroyTime)
+                {
+                    user_guide = false;
+                }  
+               
+            }
+            else{
+                canvas.SetActive(true);
+                fTickTime += Time.deltaTime;
+                if ( fTickTime >= fDestroyTime)
+                {
+                   user_guide = true;
+                }  
+                
+            }
+            
+            // canvas.SetActive(true);
+            // canvas.transform.LookAt(playerCamera);
+            
+        }
 
+        rightController.TryGetFeatureValue(CommonUsages.primaryButton, out right1_currentButtonState);
+        {
+            right_G_f_text.GetComponent<Shadow>().effectColor = default;
+            if (right1_currentButtonState)
+            {
+                right_G_f_text.GetComponent<Shadow>().effectColor = Color.white;
+                
+                button_3 +=1;
+
+                if (button_3 == 10)
+                {
+                    Debug.Log("End Effector on/off");
+                    // client.SendFrame("3");
+                    button_3 = 0;
+                    right1_currentButtonState = false; 
+            
+                }
+            }
+        }
+
+        rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out right2_currentButtonState);
+        {
+            right_G_n_text.GetComponent<Shadow>().effectColor = default;
+            if (right2_currentButtonState)
+            {
+                right_G_n_text.GetComponent<Shadow>().effectColor = Color.white;
+                button_4 +=1;
+
+                if (button_4 == 10)
+                {
+                    Debug.Log("End Effector off");
+                    // client.SendFrame("4");
+                    button_4 = 0;
+                    right2_currentButtonState = false;
+            
+                }
+
+            }
+         }
+
+        leftController.TryGetFeatureValue(CommonUsages.trigger, out left_trigger_on);
+        {
+            
+            if(left_trigger_on != 0)
+            {
+                
+                Debug.Log("left_trigger_on");
+                //  // // 텍스트 커지는 애니메이션
+                // left_T_text.fontSize = left_T_text.fontSize + 19;
+                // left_T_text.fontStyle = FontStyle.Bold;
+                // image 테두리 빛나기
+                left_T_text.GetComponent<Shadow>().effectColor = Color.white;
+    
+                
+                
+            }
+            else{
+                // left_T_text.fontSize = 26;
+                // left_T_text.fontStyle = FontStyle.Normal;
+                left_T_text.GetComponent<Shadow>().effectColor = default;
+            }
+        }
+        rightController.TryGetFeatureValue(CommonUsages.trigger, out right_trigger_on);
+        {
+            
+            if(right_trigger_on != 0)
+            {
+                
+                Debug.Log("left_trigger_on");
+                //  // // 텍스트 커지는 애니메이션
+                // left_T_text.fontSize = left_T_text.fontSize + 19;
+                // left_T_text.fontStyle = FontStyle.Bold;
+                // image 테두리 빛나기
+                right_T_text.GetComponent<Shadow>().effectColor = Color.white;
+    
+                
+                
+            }
+            else{
+                // left_T_text.fontSize = 26;
+                // left_T_text.fontStyle = FontStyle.Normal;
+                right_T_text.GetComponent<Shadow>().effectColor = default;
+            }
+        }
     }
 
-    IEnumerator manual_stick_data()
+    void OnDestroy()
+    {
+        InputDevices.deviceConnected -= OnDeviceConnected;
+        client.Dispose();
+        NetMQConfig.Cleanup(false);
+    }
+
+
+    void TryInitialize()
+    {
+        Debug.Log("기기를 찾는 중입니다.");
+        if (leftController.isValid && rightController.isValid)
+        {
+            return;
+        }
+
+        var leftHandDevices = new List<InputDevice>();
+        InputDevices.GetDevicesAtXRNode(XRNode.LeftHand, leftHandDevices);
+        if (leftHandDevices.Count > 0)
+        {
+            leftController = leftHandDevices[0];
+            Debug.Log("left controller connected\nright controller connected");
+        }
+
+        var rightHandDevices = new List<InputDevice>();
+        InputDevices.GetDevicesAtXRNode(XRNode.RightHand, rightHandDevices);
+        if (rightHandDevices.Count > 0)
+        {
+            rightController = rightHandDevices[0];
+            Debug.Log("left controller connected\nright controller connected");
+        }
+    }
+
+    void checksocket()
     {
-        while(true)
-        {
-            if (leftController.isValid)
-            {
-                left_M_text.GetComponent<Shadow>().effectColor = default;
-                // car moving 
+        client = new PublisherSocket();
+        client.Bind("tcp://*:11012");
+
+    } 
+
+    async void manual_stick_data()
+    {
+        if (leftController.isValid)
+        {
+            left_M_text.GetComponent<Shadow>().effectColor = default;
+            // car moving 
                 Vector2 leftStick;
                 if (leftController.TryGetFeatureValue(CommonUsages.primary2DAxis, out leftStick))
                 {
@@ -279,85 +363,85 @@ public class RobotArm_CT : MonoBehaviour
                     }
 
                 }
-                if (leftController.TryGetFeatureValue(CommonUsages.gripButton, out bool leftgripButton))
-                {
-                    left_Grab_text.GetComponent<Shadow>().effectColor = default;
+            if (leftController.TryGetFeatureValue(CommonUsages.gripButton, out bool leftgripButton))
+            {
+                left_Grab_text.GetComponent<Shadow>().effectColor = default;
+                
+                if (leftgripButton){
+                    // robot_Arm moving code
+                    left_Grab_text.GetComponent<Shadow>().effectColor = Color.white;
                     
-                    if (leftgripButton){
-                        // robot_Arm moving code
-                        left_Grab_text.GetComponent<Shadow>().effectColor = Color.white;
-                        
-                        Vector3 leftStick_g;
-                        if (leftController.TryGetFeatureValue(CommonUsages.devicePosition, out leftStick_g))
-                        {
-                            // Debug.Log("leftstick z : "+leftStick_g.z+ "\n"+"leftstick x : "+leftStick_g.x);///
-                            if (leftStick_g.z > 0.228 && leftStick_g.x < -0.144)
+                    Vector3 leftStick_g;
+                    if (leftController.TryGetFeatureValue(CommonUsages.devicePosition, out leftStick_g))
+                    {
+                        // Debug.Log("leftstick z : "+leftStick_g.z+ "\n"+"leftstick x : "+leftStick_g.x);///
+                        if (leftStick_g.z > 0.228 && leftStick_g.x < -0.144)
+                        {
+                            left_s +=1;
+                            
+                            if (left_s == 14)
                             {
-                                left_s +=1;
+                                Debug.Log("Transfer Data :  6");
+                                client.SendFrame("10");
+                                L_grip_go.GetComponent<Shadow>().effectColor = Color.white;
+                                leftController.SendHapticImpulse(0, (float)0.3,(float)0.3);
+                                left_s = 0;
+                            }
                                 
-                                if (left_s == 14)
-                                {
-                                    Debug.Log("Transfer Data :  6");
-                                    client.SendFrame("10");
-                                    L_grip_go.GetComponent<Shadow>().effectColor = Color.white;
-                                    leftController.SendHapticImpulse(0, (float)0.3,(float)0.3);
-                                    left_s = 0;
-                                }
-                                    
-                            }
+                        }
 
-                            if(leftStick_g.z < -0.228 && leftStick_g.x < -0.144)
+                        if(leftStick_g.z < -0.228 && leftStick_g.x < -0.144)
+                        {
+                            left_w +=1;
+                            Debug.Log("Transfer Data :  7");
+                            if (left_w == 14)
                             {
-                                left_w +=1;
-                                Debug.Log("Transfer Data :  7");
-                                if (left_w == 14)
-                                {
-                                    client.SendFrame("11");
-                                    L_grip_back.GetComponent<Shadow>().effectColor = Color.white;
-                                    leftController.SendHapticImpulse(0, (float)0.3,(float)0.3);
-                                    left_w = 0;
-                                }
+                                client.SendFrame("11");
+                                L_grip_back.GetComponent<Shadow>().effectColor = Color.white;
+                                leftController.SendHapticImpulse(0, (float)0.3,(float)0.3);
+                                left_w = 0;
                             }
+                        }
 
-                            if(leftStick_g.x > -0.0022 && leftStick_g.z > -0.014 &&  leftStick_g.z < 0.228)
+                        if(leftStick_g.x > -0.0022 && leftStick_g.z > -0.014 &&  leftStick_g.z < 0.228)
+                        {
+                            left_d +=1;
+                            Debug.Log("Transfer Data :  8");
+                            if (left_d == 14)
                             {
-                                left_d +=1;
-                                Debug.Log("Transfer Data :  8");
-                                if (left_d == 14)
-                                {
-                                    client.SendFrame("12");
-                                    L_grip_right.GetComponent<Shadow>().effectColor = Color.white;
-                                    leftController.SendHapticImpulse(0, (float)0.3,(float)0.3);
-                                    left_d = 0;
-                                }
+                                client.SendFrame("12");
+                                L_grip_right.GetComponent<Shadow>().effectColor = Color.white;
+                                leftController.SendHapticImpulse(0, (float)0.3,(float)0.3);
+                                left_d = 0;
                             }
+                        }
 
-                            if(leftStick_g.x < -0.515 && leftStick_g.z > 0.008)
+                        if(leftStick_g.x < -0.515 && leftStick_g.z > 0.008)
+                        {
+                            left_a +=1;
+                            Debug.Log("Transfer Data :  9");
+                            if (left_a == 14)
                             {
-                                left_a +=1;
-                                Debug.Log("Transfer Data :  9");
-                                if (left_a == 14)
-                                {
-                                    client.SendFrame("13");
-                                    L_grip_left.GetComponent<Shadow>().effectColor = Color.white;
-                                    leftController.SendHapticImpulse(0, (float)0.3,(float)0.3);
-                                    left_a = 0;
-                                }
+                                client.SendFrame("13");
+                                L_grip_left.GetComponent<Shadow>().effectColor = Color.white;
+                                leftController.SendHapticImpulse(0, (float)0.3,(float)0.3);
+                                left_a = 0;
                             }
-                        } 
-                    }
-                    else{
-                        L_grip_go.GetComponent<Shadow>().effectColor = default;
-                        L_grip_back.GetComponent<Shadow>().effectColor = default;
-                        L_grip_left.GetComponent<Shadow>().effectColor = default;
-                        L_grip_right.GetComponent<Shadow>().effectColor = default;
-                    }
-                    
+                        }
+                    } 
                 }
+                else{
+                    L_grip_go.GetComponent<Shadow>().effectColor = default;
+                    L_grip_back.GetComponent<Shadow>().effectColor = default;
+                    L_grip_left.GetComponent<Shadow>().effectColor = default;
+                    L_grip_right.GetComponent<Shadow>().effectColor = default;
+                }
+                
+            }
    
-            }
+        }
         
-            if (rightController.isValid)
+        if (rightController.isValid)
             {
 
                 // rotate view code
@@ -466,22 +550,23 @@ public class RobotArm_CT : MonoBehaviour
                 }
 
             }
-            yield return new WaitForSeconds(0.1f);  
-
-        }
-        
+        await Task.CompletedTask;
     }
 
-//     void OnDestroy()
-//     {
-//         if (GameManager.Instance.client != null)
-//         {
-//             GameManager.Instance.client.Dispose();
-//             NetMQConfig.Cleanup(false);
-//         }
-//     }
-
-
+    void OnDeviceConnected(InputDevice device)
+    {
+        if (device.characteristics.HasFlag(InputDeviceCharacteristics.Left))
+        {
+            Debug.Log("leftdevice device Connect");
+            leftController = device;
+        }
+        else if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right))
+        {
+            Debug.Log("rightdevice  device Connect");
+            rightController = device;
+        }
+        
+    }
 
     void setting_str(string direction)
     {

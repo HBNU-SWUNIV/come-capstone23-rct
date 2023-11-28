@@ -53,13 +53,6 @@ public class GameManager : MonoBehaviour
     public byte[] byte_ ;
     public string loading_t;
 
-    /// <summary>
-    /// robot arm_controller code
-    /// </summary>
-    // public RobotArm_CT arm_ct_Manager;
-    public PublisherSocket client;
-    public InputDevice leftController;
-    public InputDevice rightController;
 
     // Update is called once per frame
     private void Awake() 
@@ -78,7 +71,8 @@ public class GameManager : MonoBehaviour
         }
         // Loading Scene 진행중 Webrtc  동기화 진행
         string cuurentScene = SceneManager.GetActiveScene().name;
-        StartCoroutine(Find_Scene(cuurentScene));
+        // InputDevices.deviceConnected += OnDeviceConnected;
+        // TryInitialize();
         // first scene && third scene using controller
         
     }
@@ -107,101 +101,62 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Data channel received message: " + data);
         };
-        AsyncIO.ForceDotNet.Force();
-        checksocket();
 
         StartCoroutine(GetResquest(SIGNALING_SERVER_URL));
         StartCoroutine(Peer_open());
+
+        
         
         // StartCoroutine(Data_load());
     }
 
-
-    IEnumerator Find_Scene(string Scene_name)
-    {
-        Debug.Log(Scene_name);
-        // while(true)
-        // {
-        if (Scene_name == "LoadingScene")
-        {
-            Debug.Log("Find loading scene!");
-         
-        }
-        else if(Scene_name == "chair_scenes" || Scene_name == "Select_device")
-        {
-            
-            StartCoroutine(Controller_connection());
-            yield break;
-        }
-        yield break;
+    // IEnumerator Controller_connection()
+    // {
         
-            // yield return null; // 다음 프레임까지 대기
-        // }
-
-    }
-    void checksocket()
-    {
-        if (client == null)
-        {
-            client = new PublisherSocket();
-            client.Bind("tcp://*:11012");
-            Debug.Log("Socket bound to tcp://*:11012");
-        }
-        else
-        {
-            Debug.Log("Socket is already bound.");
-        }
-
-    } 
-    
-
-    IEnumerator Controller_connection()
-    {
+    //     InputDevices.deviceConnected += OnDeviceConnected;
+    //     StartCoroutine(TryInitialize());
+    //     yield break;
+    // }
+//     void OnDeviceConnected(InputDevice device)
+//     {
+//         if (device.characteristics.HasFlag(InputDeviceCharacteristics.Left))
+//         {
+//             Debug.Log("leftdevice device Connect");
+//             leftController = device;
+//         }
+//         else if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right))
+//         {
+//             Debug.Log("rightdevice  device Connect");
+//             rightController = device;
+//         }
         
-        InputDevices.deviceConnected += OnDeviceConnected;
-        yield return StartCoroutine(TryInitialize());
-        // yield break;
-    }
-    void OnDeviceConnected(InputDevice device)
-    {
-        if (device.characteristics.HasFlag(InputDeviceCharacteristics.Left))
-        {
-            Debug.Log("leftdevice device Connect");
-            leftController = device;
-        }
-        else if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right))
-        {
-            Debug.Log("rightdevice  device Connect");
-            rightController = device;
-        }
-        
-    }
+//     }
 
-    IEnumerator TryInitialize()
-    {
+//     void TryInitialize()
+//     {
         
-        if (leftController.isValid && rightController.isValid)
-        {
-            yield break;
-        }
+//         if (leftController.isValid && rightController.isValid)
+//         {
+//             return;
+//         }
         
-        var leftHandDevices = new List<InputDevice>();
-        InputDevices.GetDevicesAtXRNode(XRNode.LeftHand, leftHandDevices);
-        if (leftHandDevices.Count > 0)
-        {
-            leftController = leftHandDevices[0];
-            Debug.Log("left controller connected\nright controller connected");
-        }
+//         var leftHandDevices = new List<InputDevice>();
+//         InputDevices.GetDevicesAtXRNode(XRNode.LeftHand, leftHandDevices);
+//         if (leftHandDevices.Count > 0)
+//         {
+//             leftController = leftHandDevices[0];
+//             Debug.Log("left controller connected\nright controller connected");
+//         }
 
-        var rightHandDevices = new List<InputDevice>();
-        InputDevices.GetDevicesAtXRNode(XRNode.RightHand, rightHandDevices);
-        if (rightHandDevices.Count > 0)
-        {
-            rightController = rightHandDevices[0];
-            Debug.Log("left controller connected\nright controller connected");
-        }
-        Debug.Log("기기를 찾는 중입니다.");
-    }
+//         var rightHandDevices = new List<InputDevice>();
+//         InputDevices.GetDevicesAtXRNode(XRNode.RightHand, rightHandDevices);
+//         if (rightHandDevices.Count > 0)
+//         {
+//             rightController = rightHandDevices[0];
+//             Debug.Log("left controller connected\nright controller connected");
+//         }
+//         Debug.Log("기기를 찾는 중입니다.");
+//     }
 
 
      IEnumerator Createanswer()
@@ -327,15 +282,15 @@ public class GameManager : MonoBehaviour
         StartCoroutine(PostResquest(desc));
     }
 
-    void OnDestroy()
-    {
-        InputDevices.deviceConnected -= OnDeviceConnected;
-        if (client != null)
-        {
-            client.Dispose();
+//     void OnDestroy()
+//     {
+// //         InputDevices.deviceConnected -= OnDeviceConnected;
+//         if (client != null)
+//         {
+//             client.Dispose();
             
-        }
-        NetMQConfig.Cleanup(false);
+//         }
+//         NetMQConfig.Cleanup(false);
 
-    }
+//     }
 }
