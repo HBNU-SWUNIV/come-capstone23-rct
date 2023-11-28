@@ -8,8 +8,4 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

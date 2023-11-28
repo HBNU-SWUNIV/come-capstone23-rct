@@ -18,6 +18,8 @@ public class RobotArm_CT : MonoBehaviour
     public InputDevice rightController;
     public PublisherSocket client;
     public GameObject canvas;
+    public GameObject Back_guide;
+    public GameObject no_button;
     private Transform playerCamera;
     private bool left1_currentButtonState;
 
@@ -73,6 +75,11 @@ public class RobotArm_CT : MonoBehaviour
     int vehicle_speed_back = -1;
     int vehicle_speed_left = 1;
     int vehicle_speed_right = -1;
+    bool user_guide = true;
+    bool back_guide = false;
+    private float fDestroyTime = 0.1f;
+    private float fTickTime;
+    int count_a = 0;
 
     void Start()
     {
@@ -84,34 +91,80 @@ public class RobotArm_CT : MonoBehaviour
         InputDevices.deviceConnected += OnDeviceConnected;
         TryInitialize();
         canvas.SetActive(true);
+        Back_guide.SetActive(false);
         playerCamera = Camera.main.transform;
         canvas.transform.position = playerCamera.position + playerCamera.forward * 0.05f;
         canvas.transform.LookAt(playerCamera);
-
 
     }
 
     void Update()
     {
-        
+        count_a ++;
+        Vehicle_Speed.text = count_a.ToString();
 
         manual_stick_data();
 
+        // user_gide => back_guide로 변환
         leftController.TryGetFeatureValue(CommonUsages.primaryButton, out left1_currentButtonState);
-        if (left1_currentButtonState)
+        if (left1_currentButtonState) //button x
         {
             //왼쪽 밑에
-            canvas.SetActive(false);
+
+            if (back_guide == false)
+            {
+                Back_guide.SetActive(true);
+                // no_button.SetActive(true);
+                Back_guide.transform.LookAt(playerCamera);
+                fTickTime += Time.deltaTime;
+                if ( fTickTime >= fDestroyTime)
+                {
+                    back_guide = true;
+                }   
+
+                
+            }
+            else
+            {
+                Back_guide.SetActive(false);
+                // no_button.SetActive(false);
+                fTickTime += Time.deltaTime;
+                if ( fTickTime >= fDestroyTime)
+                {
+                   back_guide = false;
+                }  
+                
+            }
+            
 
         }
  
         leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out left2_currentButtonState);
-        if (left2_currentButtonState)
+        if (left2_currentButtonState) // button y
         {
+            if (user_guide == true)
+            {
+                canvas.SetActive(false);
+                canvas.transform.LookAt(playerCamera);
+                fTickTime += Time.deltaTime;
+                if ( fTickTime >= fDestroyTime)
+                {
+                    user_guide = false;
+                }  
+               
+            }
+            else{
+                canvas.SetActive(true);
+                fTickTime += Time.deltaTime;
+                if ( fTickTime >= fDestroyTime)
+                {
+                   user_guide = true;
+                }  
+                
+            }
             
-            canvas.SetActive(false);
-            canvas.SetActive(true);
-            canvas.transform.LookAt(playerCamera);
+            // canvas.SetActive(true);
+            // canvas.transform.LookAt(playerCamera);
             
         }
 
@@ -258,8 +311,8 @@ public class RobotArm_CT : MonoBehaviour
                         
                         if (left_s == 15)
                         {
-                            Debug.Log("Transfer Data :  2");
-                            client.SendFrame("2");
+                            // Debug.Log("Transfer Data :  2");
+                            client.SendFrame("1");
                             setting_str("Go");
                             left_s = 0;
             
@@ -273,8 +326,8 @@ public class RobotArm_CT : MonoBehaviour
                         
                         if (left_w == 15)
                         {
-                            Debug.Log("Transfer Data : 1");
-                            client.SendFrame("1");
+                            // Debug.Log("Transfer Data : 1");
+                            client.SendFrame("2");
                             setting_str("Back");
                             left_w = 0;
                             
@@ -524,21 +577,25 @@ public class RobotArm_CT : MonoBehaviour
             {
                 pre_direction = direction;
                 current_direction_gb = direction;
+                vehicle_speed_gb = vehicle_speed_gb + vehicle_speed_go;
             }
             else if(direction == "Left")
             {
                 pre_direction = direction;
                 current_direction_lr = direction;
+                vehicle_speed_lr = vehicle_speed_lr + vehicle_speed_left;
             }
             else if(direction == "Right")
             {
                 pre_direction = direction;
                 current_direction_lr = direction;
+                vehicle_speed_lr = vehicle_speed_lr + vehicle_speed_right;
             }
             else if(direction == "Back")
             {
                 pre_direction = direction;
                 current_direction_gb = direction;
+                vehicle_speed_gb = vehicle_speed_gb + vehicle_speed_back;
             }
 
         }
@@ -609,9 +666,9 @@ public class RobotArm_CT : MonoBehaviour
             current_direction_lr = "Stop";
         }
 
-        Vehicle_Speed.text = vehicle_speed_gb.ToString() + " | " + vehicle_speed_lr.ToString();
-        Current_Direction.text = current_direction_gb + " | " + current_direction_lr;
-        Current_Direction.fontSize = 35;
+        // Vehicle_Speed.text = vehicle_speed_gb.ToString() + " | " + vehicle_speed_lr.ToString();
+        // Current_Direction.text = current_direction_gb + " | " + current_direction_lr;
+        // Current_Direction.fontSize = 35;
 
     }
     

@@ -5,8 +5,6 @@ using Unity.WebRTC;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
-using System;
-using System.Text;
 
 public class WebRTC3 : MonoBehaviour
 {
@@ -29,7 +27,7 @@ public class WebRTC3 : MonoBehaviour
     }
 
     private string ID = "answerer01";
-    private string SIGNALING_SERVER_URL = "http://192.168.50.85:19612/signaling";
+    private string SIGNALING_SERVER_URL = "http://192.168.50.88:19612/signaling";
 
     private string[] STUNSERVER = { "stun:stun.l.google.com:19302" };
     public UnityWebRequest webRequest;
@@ -43,7 +41,8 @@ public class WebRTC3 : MonoBehaviour
     private RTCConfiguration config;
 
     public Renderer cuberenderer;
-    public GameManager GM;
+    // public GameManager GM;
+    byte[] byte_ ;
 
 
     // Start is called before the first frame update
@@ -60,66 +59,111 @@ public class WebRTC3 : MonoBehaviour
         RTCDataChannelInit channelConfig = new RTCDataChannelInit();
 
         channel = peerConnection.CreateDataChannel("video",channelConfig);
-        channel.OnOpen += () =>
-        {
-            Debug.Log("Data channel Open ==> 원격 Data 채널 생성 중");
-        };
-        channel.OnClose += () =>
-        {
-            Debug.Log("Data channel closed!");
-        };
+        // channel.OnOpen += () =>
+        // {
+        //     Debug.Log("Data channel Open!");
+        // };
+        // channel.OnClose += () =>
+        // {
+        //     Debug.Log("Data channel closed!");
+        // };
 
-        channel.OnMessage += (data) =>
-        {
-            Debug.Log("Data channel received message: " + data);
-        };
-
+        // channel.OnMessage += (data) =>
+        // {
+        //     Debug.Log("Data channel received message: " + data);
+        // };
         cuberenderer.enabled = false;
         
         
         StartCoroutine(GetResquest(SIGNALING_SERVER_URL));
 
+        StartCoroutine(Peer_open());
+        
+        StartCoroutine(Data_load());
+
     }
 
-    private void Update() 
-    {
+    // private void Update() 
+    // {
        
-        peerConnection.OnDataChannel = (channel_1) =>
+    //     peerConnection.OnDataChannel = (channel_1) =>
+    //     {
+    //         // Debug.Log("원격 Data 채널 생성 완료.");
+
+    //         // Assign the channel object to the dataChannel variable
+    //         channel = channel_1;
+
+    //         // // Set up the data channel event handlers
+    //         // channel.OnOpen += () =>
+    //         // {
+    //         //     Debug.Log("Data channel open --> remote 생성중.");
+    //         // };
+
+    //         // channel.OnClose += () =>
+    //         // {
+    //         //     Debug.Log("Data channel closed!");
+    //         // };
+
+    //         channel.OnMessage += (byte[] bytes) =>
+    //         {
+                
+                
+    //             // var message = System.Text.Encoding.UTF8.GetString(bytes);
+    //             // Debug.Log("카메라 String Data 수신 및 Encoding 중\n");
+                
+    //             // byte[] image_byte = Convert.FromBase64String(message);
+    //             // // Decode the received data as an image
+    //             Texture2D texture = new Texture2D(2, 2);
+    //             // Debug.Log("Inversphere에 변환 이미지 로드");
+    //             // texture.LoadImage(Convert.FromBase64String(System.Text.Encoding.UTF8.GetString(bytes)));
+    //             texture.LoadImage(bytes);
+    //             // Apply the texture to the sphere
+    //             cuberenderer.material.mainTexture = texture;
+    //             cuberenderer.enabled = true;
+    //         };
+    //     };
+
+    // }
+    
+    IEnumerator Peer_open()
+    {
+        while(true)
         {
-            Debug.Log("원격 Data 채널 생성 완료.");
-
-            // Assign the channel object to the dataChannel variable
-            channel = channel_1;
-
-            // Set up the data channel event handlers
-            channel.OnOpen += () =>
-            {
-                Debug.Log("Data channel open --> remote 생성중.");
-            };
-
-            channel.OnClose += () =>
-            {
-                Debug.Log("Data channel closed!");
-            };
-
-            channel.OnMessage += (byte[] bytes) =>
+            peerConnection.OnDataChannel = (channel_1) =>
             {
                 
-                var message = System.Text.Encoding.UTF8.GetString(bytes);
-                Debug.Log("카메라 String Data 수신 및 Encoding 중\n");
-                
-                // byte[] image_byte = Convert.FromBase64String(message);
-                // // Decode the received data as an image
+                channel = channel_1;
+
+                channel.OnMessage = (byte[] bytes) =>
+                {
+    
+                    byte_ = bytes;
+                };
+            };
+
+            yield return new WaitForSeconds(0.1f);
+
+        }
+        
+    }
+    IEnumerator Data_load()
+    {   while(true)
+        {   
+            if (byte_ != null)
+            {
                 Texture2D texture = new Texture2D(2, 2);
-                Debug.Log("Inversphere에 변환 이미지 로드");
-                texture.LoadImage(Convert.FromBase64String(System.Text.Encoding.UTF8.GetString(bytes)));
-
+                // Debug.Log(byte_);
+                // texture.LoadImage(Convert.FromBase64String(System.Text.Encoding.UTF8.GetString(byte_)));
+                texture.LoadImage(byte_);
                 // Apply the texture to the sphere
                 cuberenderer.material.mainTexture = texture;
                 cuberenderer.enabled = true;
-            };
-        };
 
+            }
+            yield return new WaitForSeconds(0.1f);
+            
+        }
+        
     }
 
   
@@ -139,10 +183,7 @@ public class WebRTC3 : MonoBehaviour
         message.sdp = desc.sdp;
         
         string json = JsonUtility.ToJson(message);
-        Debug.Log("Post json\n"+json);
-        Debug.Log("id : "+message.id);
-        Debug.Log("type : "+message.type);
-        Debug.Log("sdp : "+message.sdp);
+
         using (UnityWebRequest www = UnityWebRequest.Post(SIGNALING_SERVER_URL + "/answer", json))
         {
             yield return www.SendWebRequest();
@@ -210,14 +251,14 @@ public class WebRTC3 : MonoBehaviour
     async void peer_connection_remote_acces(RTCSessionDescription desc)
     {
         peerConnection.SetRemoteDescription(ref desc);
-        await Task.Delay(1000); 
+        await Task.Delay(500); 
 
     }
 
     async void  peer_local_connection_access(RTCSessionDescription desc)
     {
         peerConnection.SetLocalDescription(ref desc);
-        await Task.Delay(1000); 
+        await Task.Delay(500); 
         StartCoroutine(PostResquest(desc));
     }
 

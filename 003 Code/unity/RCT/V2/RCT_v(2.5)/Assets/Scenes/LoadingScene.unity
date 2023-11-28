@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.0015996448, g: 0.0022004682, b: 0.00290606, a: 1}
+  m_IndirectSpecularColor: {r: 0.0015996723, g: 0.0022004975, b: 0.0029061062, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1503,7 +1503,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 955800203}
-  - component: {fileID: 955800204}
   - component: {fileID: 955800205}
   m_Layer: 0
   m_Name: gaze_Bar
@@ -1547,43 +1546,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &955800204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 955800202}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9396bd7466aaaad4982168103c02d57e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubes:
-  - {fileID: 1677795483}
-  - {fileID: 2063844030}
-  - {fileID: 1613995098}
-  - {fileID: 1214612293}
-  - {fileID: 1574459573}
-  - {fileID: 640131483}
-  - {fileID: 2058219683}
-  - {fileID: 69018310}
-  - {fileID: 2124081315}
-  - {fileID: 1772804285}
-  - {fileID: 830097519}
-  - {fileID: 80527856}
-  - {fileID: 1688700402}
-  - {fileID: 1174253691}
-  - {fileID: 589702017}
-  - {fileID: 1949085857}
-  - {fileID: 423911146}
-  - {fileID: 2084005344}
-  - {fileID: 1767669}
-  - {fileID: 403464467}
-  blinkDuration: 0.5
-  repeatInterval: 0
-  numberOfBlinks: 60
-  glowMaterial: {fileID: 2100000, guid: d1fbc6ffee9556a4eac7e655fc35ddbb, type: 2}
 --- !u!114 &955800205
 MonoBehaviour:
   m_ObjectHideFlags: 0
