@@ -1,5 +1,0 @@
-SIGNALING_SERVER_URL = 'http://172.17.100.61:8000'
-HOST = "172.17.100.61"
-SOCKET = "localhost"
-PORT = 12345
-config = "203.230.104.196"
