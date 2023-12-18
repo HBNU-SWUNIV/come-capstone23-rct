@@ -17,6 +17,11 @@ public class LoadingSceneController : MonoBehaviour
         nextScene = sceneName;
         SceneManager.LoadScene("LoadingScene");
     }
+    public static void LoadScene_back(string sceneName)
+    {
+        nextScene = sceneName;
+        SceneManager.LoadScene("Select_device");
+    }
     void Start()
     {
         StartCoroutine(LoadSceneProcess());
